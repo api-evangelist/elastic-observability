@@ -28,6 +28,10 @@ common:
     url: https://www.elastic.co/observability
   - type: Documentation
     url: https://www.elastic.co/guide/en/observability/current/index.html
+  - type: Integrations
+    url: https://www.elastic.co/integrations
+integrations:
+  - name: Become a partner
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
