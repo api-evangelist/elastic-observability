@@ -1,0 +1,180 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Elastic Observability (APM Server) API",
+    "version": "8.x"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Server Info",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Server information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/"
+          },
+          "docs": "Returns build/version information for the APM Server."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Intake",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "APM agent event intake",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/intake/v2/events",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Newline-delimited JSON stream of transactions, spans, errors, and metricsets from APM agents."
+        },
+        {
+          "info": {
+            "name": "RUM (Real User Monitoring) event intake",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/intake/v2/rum/events",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "RUM (Real User Monitoring) event intake"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Agent Configuration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get agent configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/config/v1/agents",
+            "params": [
+              {
+                "name": "service.name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "service.environment",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns central configuration values for a given service and environment."
+        },
+        {
+          "info": {
+            "name": "Get RUM agent configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/config/v1/agents/rum",
+            "params": [
+              {
+                "name": "service.name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "service.environment",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get RUM agent configuration"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "OpenTelemetry",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "OTLP traces ingest (HTTP)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/opentelemetry.proto.collector.trace.v1.TraceService/Export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OpenTelemetry OTLP traces intake endpoint."
+        },
+        {
+          "info": {
+            "name": "OTLP metrics ingest (HTTP)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/opentelemetry.proto.collector.metrics.v1.MetricsService/Export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OTLP metrics ingest (HTTP)"
+        },
+        {
+          "info": {
+            "name": "OTLP logs ingest (HTTP)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/opentelemetry.proto.collector.logs.v1.LogsService/Export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OTLP logs ingest (HTTP)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
