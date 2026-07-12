@@ -1,0 +1,22 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/elastic-observability-openapi.yml
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - header
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: Secret token
+  sources:
+  - openapi/elastic-observability-openapi.yml
+- name: apiKeyAuth
+  type: apiKey
+  in: header
+  parameter: Authorization
+  sources:
+  - openapi/elastic-observability-openapi.yml

@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.elastic.co
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec 12 21:06:03 2026 GMT
+  hsts: false
+domains:
+- domain: elastic.co
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: quarantine

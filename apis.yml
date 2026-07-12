@@ -24,6 +24,12 @@ apis:
       - type: Documentation
         url: https://www.elastic.co/guide/en/observability/current/index.html
 common:
+  - type: TrustCenter
+    url: security/elastic-observability-trust-center.yml
+  - type: DomainSecurity
+    url: security/elastic-observability-domain-security.yml
+  - type: Authentication
+    url: authentication/elastic-observability-authentication.yml
   - type: Website
     url: https://www.elastic.co/observability
   - type: Documentation
