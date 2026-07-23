@@ -1,0 +1,79 @@
+openapi: 3.1.0
+info:
+  title: Elastic Observability (APM Server) Agent Configuration API
+  version: 8.x
+  description: Elastic Observability exposes the APM Server intake and configuration APIs used by APM agents and the OpenTelemetry / Jaeger compatibility paths to deliver logs, metrics, and traces into the Elastic Stack.
+  contact:
+    name: Elastic
+    url: https://www.elastic.co/guide/en/observability/current/index.html
+servers:
+- url: https://{host}:{port}
+  description: APM Server
+  variables:
+    host:
+      default: localhost
+    port:
+      default: '8200'
+security:
+- bearerAuth: []
+- apiKeyAuth: []
+tags:
+- name: Agent Configuration
+paths:
+  /config/v1/agents:
+    get:
+      summary: Get agent configuration
+      description: Returns central configuration values for a given service and environment.
+      operationId: getAgentConfig
+      tags:
+      - Agent Configuration
+      parameters:
+      - in: query
+        name: service.name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: service.environment
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Configuration values
+          content:
+            application/json:
+              schema:
+                type: object
+  /config/v1/agents/rum:
+    get:
+      summary: Get RUM agent configuration
+      operationId: getRumAgentConfig
+      tags:
+      - Agent Configuration
+      parameters:
+      - in: query
+        name: service.name
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: service.environment
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Configuration values
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Secret token
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
