@@ -3,7 +3,20 @@ name: Elastic Observability
 description: >-
   Elastic Observability provides unified logs, metrics, traces, and AI-driven anomaly detection built on the Elastic Stack.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/elastic-observability.png
 tags:
   - AIOps
   - Observability
@@ -13,16 +26,54 @@ created: '2026-03-27'
 modified: '2026-03-27'
 specificationVersion: '0.19'
 apis:
-  - aid: elastic-observability:elastic-observability
-    name: Elastic Observability
-    description: >-
-      Elastic Observability provides unified logs, metrics, traces, and AI-driven anomaly detection built on the Elastic Stack.
-    humanURL: https://www.elastic.co/observability
-    tags:
-      - AIOps
-    properties:
-      - type: Documentation
-        url: https://www.elastic.co/guide/en/observability/current/index.html
+- aid: elastic-observability:elastic-observability
+  name: Elastic Observability
+  description: >-
+    Elastic Observability provides unified logs, metrics, traces, and AI-driven anomaly detection built
+    on the Elastic Stack.
+  humanURL: https://www.elastic.co/observability
+  tags:
+  - AIOps
+  properties:
+  - type: Documentation
+    url: https://www.elastic.co/guide/en/observability/current/index.html
+- aid: elastic-observability:elastic-observability-agent-configuration-api
+  name: Elastic Observability Agent Configuration API
+  description: >-
+    The Agent Configuration API from Elastic Observability — 2 operation(s) for agent configuration.
+  humanURL: https://www.elastic.co/observability
+  tags:
+  - Agent Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/elastic-observability-agent-configuration-api-openapi.yml
+- aid: elastic-observability:elastic-observability-intake-api
+  name: Elastic Observability Intake API
+  description: The Intake API from Elastic Observability — 2 operation(s) for intake.
+  humanURL: https://www.elastic.co/observability
+  tags:
+  - Intake
+  properties:
+  - type: OpenAPI
+    url: openapi/elastic-observability-intake-api-openapi.yml
+- aid: elastic-observability:elastic-observability-opentelemetry-api
+  name: Elastic Observability OpenTelemetry API
+  description: The OpenTelemetry API from Elastic Observability — 3 operation(s) for opentelemetry.
+  humanURL: https://www.elastic.co/observability
+  tags:
+  - OpenTelemetry
+  properties:
+  - type: OpenAPI
+    url: openapi/elastic-observability-opentelemetry-api-openapi.yml
+- aid: elastic-observability:elastic-observability-server-info-api
+  name: Elastic Observability Server Info API
+  description: The Server Info API from Elastic Observability — 1 operation(s) for server info.
+  humanURL: https://www.elastic.co/observability
+  tags:
+  - Server Info
+  properties:
+  - type: OpenAPI
+    url: openapi/elastic-observability-server-info-api-openapi.yml
 common:
   - type: AgenticAccess
     url: agentic-access/elastic-observability-agentic-access.yml
