@@ -1,0 +1,20 @@
+{
+  "provider": "elastic-observability",
+  "sources": [
+    "elastic-observability-agent-configuration-api-openapi.yml",
+    "elastic-observability-intake-api-openapi.yml",
+    "elastic-observability-opentelemetry-api-openapi.yml",
+    "elastic-observability-server-info-api-openapi.yml"
+  ],
+  "outputs": [
+    "elastic-observability-agent-configuration-api-openapi.yml",
+    "elastic-observability-intake-api-openapi.yml",
+    "elastic-observability-opentelemetry-api-openapi.yml",
+    "elastic-observability-server-info-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

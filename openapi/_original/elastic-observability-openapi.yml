@@ -1,0 +1,186 @@
+openapi: 3.1.0
+info:
+  title: Elastic Observability (APM Server) API
+  version: "8.x"
+  description: >-
+    Elastic Observability exposes the APM Server intake and configuration APIs
+    used by APM agents and the OpenTelemetry / Jaeger compatibility paths to
+    deliver logs, metrics, and traces into the Elastic Stack.
+  contact:
+    name: Elastic
+    url: https://www.elastic.co/guide/en/observability/current/index.html
+servers:
+  - url: https://{host}:{port}
+    description: APM Server
+    variables:
+      host:
+        default: localhost
+      port:
+        default: "8200"
+security:
+  - bearerAuth: []
+  - apiKeyAuth: []
+paths:
+  /:
+    get:
+      summary: Server information
+      description: Returns build/version information for the APM Server.
+      operationId: serverInfo
+      tags: [Server Info]
+      responses:
+        '200':
+          description: Server info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  build_date:
+                    type: string
+                  build_sha:
+                    type: string
+                  publish_ready:
+                    type: boolean
+                  version:
+                    type: string
+  /intake/v2/events:
+    post:
+      summary: APM agent event intake
+      description: Newline-delimited JSON stream of transactions, spans, errors, and metricsets from APM agents.
+      operationId: intakeEvents
+      tags: [Intake]
+      requestBody:
+        required: true
+        content:
+          application/x-ndjson:
+            schema:
+              type: string
+      responses:
+        '202':
+          description: Accepted
+        '400':
+          description: Invalid event(s)
+  /intake/v2/rum/events:
+    post:
+      summary: RUM (Real User Monitoring) event intake
+      operationId: intakeRumEvents
+      tags: [Intake]
+      requestBody:
+        required: true
+        content:
+          application/x-ndjson:
+            schema:
+              type: string
+      responses:
+        '202':
+          description: Accepted
+  /config/v1/agents:
+    get:
+      summary: Get agent configuration
+      description: Returns central configuration values for a given service and environment.
+      operationId: getAgentConfig
+      tags: [Agent Configuration]
+      parameters:
+        - in: query
+          name: service.name
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: service.environment
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Configuration values
+          content:
+            application/json:
+              schema:
+                type: object
+  /config/v1/agents/rum:
+    get:
+      summary: Get RUM agent configuration
+      operationId: getRumAgentConfig
+      tags: [Agent Configuration]
+      parameters:
+        - in: query
+          name: service.name
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: service.environment
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Configuration values
+          content:
+            application/json:
+              schema:
+                type: object
+  /opentelemetry.proto.collector.trace.v1.TraceService/Export:
+    post:
+      summary: OTLP traces ingest (HTTP)
+      description: OpenTelemetry OTLP traces intake endpoint.
+      operationId: otlpTracesExport
+      tags: [OpenTelemetry]
+      requestBody:
+        required: true
+        content:
+          application/x-protobuf:
+            schema:
+              type: string
+              format: binary
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Accepted
+  /opentelemetry.proto.collector.metrics.v1.MetricsService/Export:
+    post:
+      summary: OTLP metrics ingest (HTTP)
+      operationId: otlpMetricsExport
+      tags: [OpenTelemetry]
+      requestBody:
+        required: true
+        content:
+          application/x-protobuf:
+            schema:
+              type: string
+              format: binary
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Accepted
+  /opentelemetry.proto.collector.logs.v1.LogsService/Export:
+    post:
+      summary: OTLP logs ingest (HTTP)
+      operationId: otlpLogsExport
+      tags: [OpenTelemetry]
+      requestBody:
+        required: true
+        content:
+          application/x-protobuf:
+            schema:
+              type: string
+              format: binary
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Accepted
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Secret token
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
