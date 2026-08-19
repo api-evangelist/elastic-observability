@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Elastic Observability (APM Server) Agent Configuration API",
+    "version": "8.x"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Agent Configuration",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get agent configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/config/v1/agents",
+            "params": [
+              {
+                "name": "service.name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "service.environment",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Returns central configuration values for a given service and environment."
+        },
+        {
+          "info": {
+            "name": "Get RUM agent configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://{host}:{port}/config/v1/agents/rum",
+            "params": [
+              {
+                "name": "service.name",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "service.environment",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get RUM agent configuration"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

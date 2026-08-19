@@ -1,0 +1,54 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Elastic Observability (APM Server) Agent Configuration Intake API",
+    "version": "8.x"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Intake",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "APM agent event intake",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/intake/v2/events",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Newline-delimited JSON stream of transactions, spans, errors, and metricsets from APM agents."
+        },
+        {
+          "info": {
+            "name": "RUM (Real User Monitoring) event intake",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/intake/v2/rum/events",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "RUM (Real User Monitoring) event intake"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

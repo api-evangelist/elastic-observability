@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Elastic Observability (APM Server) Agent Configuration OpenTelemetry API",
+    "version": "8.x"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "OpenTelemetry",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "OTLP traces ingest (HTTP)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/opentelemetry.proto.collector.trace.v1.TraceService/Export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OpenTelemetry OTLP traces intake endpoint."
+        },
+        {
+          "info": {
+            "name": "OTLP metrics ingest (HTTP)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/opentelemetry.proto.collector.metrics.v1.MetricsService/Export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OTLP metrics ingest (HTTP)"
+        },
+        {
+          "info": {
+            "name": "OTLP logs ingest (HTTP)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://{host}:{port}/opentelemetry.proto.collector.logs.v1.LogsService/Export",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "OTLP logs ingest (HTTP)"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
