@@ -1,0 +1,51 @@
+generated: '2026-08-29'
+method: searched
+source: https://www.elastic.co/docs/solutions/search/run-elasticsearch-locally
+docs:
+- https://www.elastic.co/docs/solutions/search/run-elasticsearch-locally
+- https://www.elastic.co/pricing
+provider: Elastic Observability
+providerId: elastic-observability
+model: local-stack + free trial
+model_note: >-
+  Elastic ships NO hosted sandbox and NO test-mode key namespace. There is no test/live key prefix
+  pair, no magic test values, no time-simulation clock and no fixture/trigger tooling — those are
+  payments-API conventions and none of them exist here. What Elastic offers instead is the whole
+  product, either running on your own machine or on a time-boxed cloud trial. Recorded as-is;
+  nothing invented to fill the shape.
+local:
+  name: start-local
+  command: curl -fsSL https://elastic.co/start-local | sh
+  probed: '2026-08-29'
+  probe_status: 200
+  probe_note: >-
+    https://elastic.co/start-local returns HTTP 200 application/octet-stream — a real installer
+    script, not a docs page.
+  what_it_starts: Elasticsearch and Kibana in Docker for local development and evaluation.
+  caveat: >-
+    start-local brings up Elasticsearch + Kibana. An APM Server / EDOT Collector to receive the
+    intake and OTLP traffic in this repo's OpenAPI is a separate container, run against the local
+    stack.
+  self_managed_default_base: http://localhost:8200
+trial:
+  offered: true
+  type: Elastic Cloud free trial
+  length: not stated on https://www.elastic.co/pricing
+  cta: Start free trial
+  credit_card_required: not stated
+test_credentials:
+  test_mode_keys: false
+  key_prefix_separation: false
+  detail: >-
+    Elastic API keys and APM secret tokens have no test/live prefix distinction. A key is scoped by
+    the privileges granted to it and by which deployment it belongs to, so isolation is achieved by
+    using a separate deployment or project — not by a mode flag on the credential.
+magic_values: []
+time_simulation:
+  supported: false
+fixtures:
+  supported: false
+  nearest_equivalent: >-
+    elastic-package (https://github.com/elastic/elastic-package, v0.126.1 / 2026-08-27) runs
+    integration test stacks and generates sample data for Elastic integrations. It is a package
+    developer tool, not a sandbox for API consumers.

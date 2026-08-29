@@ -1,0 +1,54 @@
+generated: '2026-08-29'
+method: searched
+source: https://www.elastic.co/docs/release-notes/observability
+provider: Elastic Observability
+providerId: elastic-observability
+scheme: semver
+current_version: 9.5.2
+cadence: >-
+  Continuous — Elastic publishes a single rolling documentation set from Stack 9.0.0 onward, with
+  release notes per minor and patch release.
+note: >-
+  Elastic's Observability release-notes page groups entries by version but does not print a
+  release date next to each heading, so no `date:` is recorded below. Omitting the field is the
+  honest record; inventing dates from the release cadence would not be.
+entries:
+- version: 9.5.2
+  date: null
+  breaking: false
+  highlights:
+  - Fixed metric threshold rule form display issues.
+  - Resolved an APM agent configuration security vulnerability.
+  - Corrected maintenance window status loading for read-only users.
+- version: 9.5.1
+  date: null
+  breaking: false
+  highlights:
+  - Maintenance window visibility added in Synthetics monitor details.
+  - Animated transitions for Streams data lifecycle phases.
+  - Lifecycle configuration can be copied between streams.
+- version: 9.5.0
+  date: null
+  breaking: false
+  highlights:
+  - Introduced the observability.investigation skill to Elastic Agent.
+  - AI Agent became the default chat experience.
+  - APM Service Map expanded with embeddable panels and filters.
+  - OpenTelemetry collector capabilities folded into Elastic Agent — the EDOT Collector is no
+    longer a separate component.
+  notable_changes:
+  - Streams "Retention" tab renamed to "Data lifecycle".
+  - Attachments enabled for all stream types by default.
+- version: 9.4.5
+  date: null
+  breaking: false
+  highlights:
+  - Fixed package policy deletion forwarding.
+  - Synthetics monitors can reference maintenance windows by name.
+- version: 9.4.4
+  date: null
+  breaking: false
+  highlights:
+  - Improved APM Traces table display.
+  - Synthetics performance optimization.
+  - Defensive API key checks for APM integration policies.

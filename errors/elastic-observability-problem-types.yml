@@ -1,0 +1,61 @@
+generated: '2026-08-29'
+method: derived
+source: openapi/_original/elastic-observability-observability-intake-openapi.yml
+docs:
+- https://www.elastic.co/docs/solutions/observability/apm/apm-server/configure
+provider: Elastic Observability
+providerId: elastic-observability
+format: none
+format_note: >-
+  Not RFC 9457. The contract declares no application/problem+json response and no error envelope
+  schema is bound to any response. It does define a component schema named `error` — but that is
+  the APM *error event* an agent SENDS IN on /intake/v2/events (an application exception captured
+  by an agent), not an API error the server returns. Conflating the two would be wrong.
+coverage_note: >-
+  The published contract declares only two non-2xx responses across 14 operations, both on POST
+  /config/v1/agents. Every intake operation declares 202 only, and every OTLP operation declares
+  200 only — so the documented failure surface for the entire telemetry write path is empty. This
+  is a real gap in the contract, not a gap in this harvest.
+problem_types:
+- status: 403
+  operationId: postAgentConfig
+  path: /config/v1/agents
+  title: Agent configuration fetch disabled
+  detail: >-
+    "APM Server is configured to fetch agent configuration from Elasticsearch but the operation is
+    not permitted" — verbatim response description from the contract.
+  content_type: none declared
+  remediation: >-
+    Grant the APM Server's Elasticsearch credentials the privileges needed to read central agent
+    configuration, or disable central configuration.
+  source: openapi/elastic-observability-agent-config-api-openapi.yml
+- status: 503
+  operationId: postAgentConfig
+  path: /config/v1/agents
+  title: APM Server unavailable
+  detail: >-
+    "APM Server is starting up or Elasticsearch is unreachable" — verbatim response description
+    from the contract.
+  content_type: none declared
+  remediation: Retry with backoff; check APM Server startup state and Elasticsearch connectivity.
+  source: openapi/elastic-observability-agent-config-api-openapi.yml
+undeclared_but_documented:
+- status: 400
+  surface: /intake/v2/events, /intake/v2/rum/events, /intake/v3/rum/events
+  note: >-
+    The intake API returns 400 for malformed or invalid NDJSON events, but the published OpenAPI
+    declares only 202 on these operations. Recorded here as a documented-elsewhere gap, not
+    invented — the previous scaffolded spec in this repo asserted a 400 response that the real
+    first-party contract does not declare.
+- status: 429
+  surface: OTLP ingest (/v1/traces, /v1/metrics, /v1/logs and the gRPC Export paths)
+  meaning: Too Many Requests — capacity exhausted.
+  detail: >-
+    Elastic documents that OTLP ingest can surface "rpc error: code = ResourceExhausted desc =
+    request exceeded available capacity" and HTTP 429.
+  docs: https://www.elastic.co/docs/reference/opentelemetry/motlp/rate-limiting
+  note: Not declared in the OpenAPI.
+summary:
+  declared_error_responses: 2
+  operations_with_no_error_response: 12
+  rfc9457: false

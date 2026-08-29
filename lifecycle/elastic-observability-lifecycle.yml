@@ -1,0 +1,70 @@
+generated: '2026-08-29'
+method: searched
+source: https://www.elastic.co/docs/get-started/versioning-availability
+docs:
+- https://www.elastic.co/docs/get-started/versioning-availability
+- https://www.elastic.co/support/eol
+- https://www.elastic.co/docs/release-notes/observability
+- https://status.elastic.co
+provider: Elastic Observability
+providerId: elastic-observability
+versioning:
+  scheme: semver
+  format: X.Y.Z
+  current_version: 9.5.2
+  current_version_source: https://www.elastic.co/docs/release-notes/observability
+  in_url: false
+  note: >-
+    The APM Server intake contract versions its ENDPOINTS, not the product: /intake/v2/events,
+    /intake/v2/rum/events and /intake/v3/rum/events coexist, and the OTLP paths follow the
+    OpenTelemetry Protocol's own /v1/* versioning. The published Observability Intake OpenAPI
+    carries info.version "0.1", which is the spec document's version and not the product's.
+  rules:
+  - major: Significant changes, such as new features, breaking changes, and major enhancements.
+  - minor: Introduces new features and improvements, while maintaining backward compatibility.
+  - patch: Contains bug fixes and security updates, without introducing new features or breaking changes.
+lifecycle_states:
+- name: Experimental
+  description: Feature is in early development stage and might change or be removed at any time.
+- name: Technical preview
+  description: Feature is nearing general availability and ready for evaluation. Use with caution in production.
+- name: Generally Available (GA)
+  description: Production-ready feature. When unspecified, GA is the default.
+- name: Deprecated
+  description: Feature is still usable, but is planned to be removed or replaced in a future update.
+- name: Removed
+  description: Feature can no longer be used.
+- name: Unavailable
+  description: Feature is unsupported in this deployment type or version.
+deprecation:
+  policy_published: true
+  policy_url: https://www.elastic.co/support/eol
+  maintenance_term: >-
+    Elastic maintains each major release series for the longer of 30 months after the GA date of
+    that major release, or 18 months after the GA date of the following major release.
+  support_extension: Support continues for an additional six months after the maintenance term ends.
+  eol_behaviour: >-
+    Once a version reaches EOL it is frozen — no further releases, fixes or development.
+  sunset_headers: false
+  sunset_headers_note: >-
+    No RFC 8594 Sunset or Deprecation response header is documented for the intake API, and none
+    appears in the published OpenAPI.
+  deprecated_operations: []
+  deprecated_operations_note: >-
+    Zero operations in openapi/ carry `deprecated: true`. /intake/v2/rum/events is superseded by
+    /intake/v3/rum/events in practice, but Elastic does not mark it deprecated in the contract.
+status_page:
+  url: https://status.elastic.co
+  name: Elastic Cloud (Public)
+  provider: Statuspage
+  api: https://status.elastic.co/api/v2/status.json
+  probed: '2026-08-29'
+  probe_status: 200
+  note: >-
+    Machine-readable Statuspage v2 API is served. At probe time it reported
+    indicator "major" / "Partial System Outage" — recorded as evidence the endpoint is live, not
+    as a judgement about reliability.
+sla:
+  published: true
+  url: https://www.elastic.co/legal/service-level-agreement
+  note: SLA terms are published under Elastic's legal terms; not parsed here.

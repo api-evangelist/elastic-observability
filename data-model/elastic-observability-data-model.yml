@@ -1,0 +1,121 @@
+generated: '2026-08-29'
+method: derived
+source: openapi/_original/elastic-observability-observability-intake-openapi.yml
+docs:
+- https://www.elastic.co/docs/reference/ecs
+provider: Elastic Observability
+providerId: elastic-observability
+shape: >-
+  The intake contract carries no server-assigned resource ids and no URL-addressable entities — it
+  is an event graph the CLIENT constructs and stamps. Relationships are expressed by W3C-style
+  correlation ids the agent generates (trace_id, id, parent_id, transaction_id), not by
+  server-issued keys, and there is no GET to read any of these back through this API. That is the
+  defining property of the model and it is why nothing below has a `via` pointing at a fetch
+  operation.
+envelopes:
+  format: NDJSON — one JSON object per line, first line always the metadata envelope
+  v2:
+  - MetadataEvent  -> metadata
+  - TransactionEvent -> transaction
+  - SpanEvent -> span
+  - ErrorEvent -> error
+  - MetricSetEvent -> metricset
+  v3_rum:
+  - MetadataEventv3 -> metadata-2
+  - TransactionEventv3 -> transaction-2
+  - SpanEventv3 -> span-2
+  - ErrorEventv3 -> error-2
+  v3_note: >-
+    The RUM v3 schemas are the same model with single/double-letter field names (transaction.tid =
+    trace_id, .id = id, .d = duration, .yc = span_count) to shrink browser payloads. They are not a
+    different domain — they are a wire-compression of it.
+entities:
+- name: metadata
+  description: Service, agent, host, process, user, cloud and label context that applies to every
+    event in the batch.
+  required: [service]
+  fields: [cloud, labels, network, process, service, system, user]
+  cardinality: exactly one per intake batch, sent as the first NDJSON line
+- name: transaction
+  description: A top-level operation — an HTTP request, a background job, a page load.
+  required: [trace_id, id, type, span_count, duration]
+  fields: [context, dropped_spans_stats, duration, experience, faas, id, links, marks, name, otel,
+    outcome, parent_id, result, sample_rate, sampled, session, span_count, timestamp, trace_id, type]
+- name: span
+  description: A unit of work inside a transaction — a DB query, an outbound HTTP call.
+  required: [id, trace_id, name, parent_id, type, duration]
+  fields: [action, child_ids, composite, context, duration, id, links, name, otel, outcome,
+    parent_id, sample_rate, stacktrace, start, subtype, sync, timestamp, trace_id, transaction_id, type]
+- name: error
+  description: A captured exception or log error, optionally bound to the transaction it occurred in.
+  required: [id]
+  fields: [context, culprit, exception, id, log, parent_id, timestamp, trace_id, transaction, transaction_id]
+- name: metricset
+  description: A sample of one or more metrics, optionally scoped to a service, span or transaction.
+  required: [samples]
+  fields: [faas, samples, service, span, tags, timestamp, transaction]
+relationships:
+- from: transaction
+  to: trace
+  type: belongs_to
+  via: trace_id
+  note: trace is not a schema in the contract — it is the id-only grouping every event shares.
+- from: span
+  to: transaction
+  type: belongs_to
+  via: transaction_id
+- from: span
+  to: trace
+  type: belongs_to
+  via: trace_id
+- from: span
+  to: span
+  type: belongs_to
+  via: parent_id
+  note: self-referencing — parent_id may name either the parent span or the transaction.
+- from: span
+  to: span
+  type: has_many
+  via: child_ids
+- from: transaction
+  to: span
+  type: has_many
+  via: span_count
+  note: a count, not a link — the spans arrive as separate NDJSON lines carrying transaction_id.
+- from: error
+  to: transaction
+  type: belongs_to
+  via: transaction_id
+- from: error
+  to: trace
+  type: belongs_to
+  via: trace_id
+- from: error
+  to: span
+  type: belongs_to
+  via: parent_id
+- from: metricset
+  to: transaction
+  type: belongs_to
+  via: transaction
+  note: an embedded {name, type} object rather than an id reference.
+- from: metricset
+  to: span
+  type: belongs_to
+  via: span
+- from: metadata
+  to: transaction
+  type: has_many
+  via: batch position
+  note: >-
+    Implicit, not a field. The metadata line applies to every subsequent event line in the same
+    request body.
+id_scheme:
+  server_assigned: false
+  detail: >-
+    trace_id is a 128-bit id and span/transaction id is a 64-bit id, both hex-encoded and both
+    generated CLIENT-side by the agent — matching W3C Trace Context. No prefixed, provider-issued
+    id (the `cus_` / `pi_` pattern) exists anywhere in this model.
+schema_count: 18
+entity_count: 5
+relationship_count: 12

@@ -1,0 +1,33 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Observability Intake server info API (server-info)
+  version: 1.0.0
+extends: openapi/elastic-observability-server-info-api-openapi.yml
+x-provenance:
+  generated: '2026-08-29'
+  method: generated
+  source: Derived from Elastic's own documentation; never mutates openapi/_original/elastic-observability-observability-intake-openapi.yml.
+actions:
+- target: $
+  description: 'Replace the placeholder relative server with the real deployment-scoped hosts Elastic
+    documents. The published contract ships servers: [{url: ''/''}], which names no host at all; Elastic
+    documents the Elastic Cloud APM Server address as https://<hash>.apm.<region>.cloud.es.io:443 and
+    the self-managed default as http://localhost:8200.'
+  update:
+    servers:
+    - url: https://{deployment}.apm.{region}.cloud.es.io:443
+      description: Elastic Cloud Hosted APM Server — deployment-scoped host, from the Elastic Cloud console
+      variables:
+        deployment:
+          default: deployment
+          description: Deployment hash from the Elastic Cloud console
+        region:
+          default: us-east-1
+          description: Elastic Cloud region
+    - url: http://{host}:{port}
+      description: Self-managed / Elastic Cloud Enterprise APM Server
+      variables:
+        host:
+          default: localhost
+        port:
+          default: '8200'

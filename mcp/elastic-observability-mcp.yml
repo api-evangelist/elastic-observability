@@ -1,0 +1,124 @@
+generated: '2026-08-29'
+method: searched
+source: https://www.elastic.co/docs/explore-analyze/ai-features/agent-builder/mcp-server
+docs:
+- https://www.elastic.co/docs/explore-analyze/ai-features/agent-builder/mcp-server
+- https://www.elastic.co/docs/explore-analyze/ai-features/agent-builder/tools/builtin-tools-reference
+- https://www.elastic.co/docs/solutions/search/mcp
+provider: Elastic Observability
+providerId: elastic-observability
+name: Elastic Agent Builder MCP Server
+status: published
+deployment:
+  mode: both
+  endpoint: https://{KIBANA_URL}/api/agent_builder/mcp
+  install: npx -y mcp-remote https://{KIBANA_URL}/api/agent_builder/mcp
+  package: https://www.npmjs.com/package/@elastic/mcp-server-elasticsearch
+  auth: api-key
+  verified: searched
+  note: >-
+    The remote endpoint is REAL but DEPLOYMENT-SCOPED — there is no single elastic.co MCP URL to
+    POST to. Elastic Agent Builder is the MCP server and it runs inside the customer's own Kibana,
+    so the address is {KIBANA_URL}/api/agent_builder/mcp (or
+    {KIBANA_URL}/s/{SPACE_NAME}/api/agent_builder/mcp for a non-default Kibana space). Documented
+    for Elastic Stack 9.2.0+ and Elastic Cloud Serverless projects. Authentication is an Elastic
+    API key ("API key authentication"); the docs also list "OAuth 2.1 authentication using an
+    application connection". No anonymous tools/list probe is possible against a templated,
+    per-customer host, so nothing here was probed live — the endpoint, transport and tool
+    identifiers below are taken verbatim from Elastic's own documentation.
+    The `package` field records the LEGACY stdio path: @elastic/mcp-server-elasticsearch, last
+    published 2025-07-01 and superseded by the Agent Builder endpoint; mcp-remote is the
+    documented way to bridge a stdio-only MCP client to the remote endpoint.
+authentication:
+  method: api-key
+  header: 'Authorization: ApiKey <key>'
+  privileges:
+  - Kibana feature privilege feature_agentBuilder.read
+  - read access to the Observability indices the tools query (for example traces-apm.*,
+    observability-annotations, .slo-observability.*)
+  note: >-
+    Privileges are as documented by Elastic; not verified by us against a live deployment.
+tools:
+  note: >-
+    Elastic Agent Builder exposes one shared tool catalog over MCP across all three Elastic
+    solutions. Only the observability.* family and the cross-solution platform.* tools an
+    Observability operator actually uses are listed here — the security.* families in the same
+    catalog belong to Elastic Security, not to this product.
+  observability:
+  - id: observability.get_alerts
+    description: Retrieves Observability alerts within a specified time range.
+  - id: observability.get_services
+    description: Retrieves information about services being monitored in APM.
+  - id: observability.get_hosts
+    description: Retrieves information about hosts in infrastructure monitoring.
+  - id: observability.get_index_info
+    description: Retrieves information about Observability indices and their fields.
+  - id: observability.get_trace_metrics
+    description: Retrieves metrics and statistics for distributed traces.
+  - id: observability.get_service_topology
+    description: Retrieves the service dependency graph including RED metrics per connection.
+  - id: observability.get_log_groups
+    description: Returns categorized log messages and exceptions, grouped by type.
+  - id: observability.get_log_change_points
+    description: Detects statistically significant changes in log patterns and volumes.
+  - id: observability.get_metric_change_points
+    description: Detects statistically significant changes in metrics across groups.
+  - id: observability.get_traces
+    description: Retrieves Observability documents for traces, grouped by trace ID.
+  - id: observability.run_log_rate_analysis
+    description: Analyzes log ingestion rates to identify anomalies and trends.
+  - id: observability.get_anomaly_detection_jobs
+    description: Retrieves Machine Learning anomaly detection jobs and top anomaly records.
+  - id: observability.get_logs
+    description: Searches and filters logs with histogram trend, count, samples, and patterns.
+  - id: observability.get_runtime_metrics
+    description: Retrieves runtime metrics for services, including CPU and memory consumption.
+  - id: observability.get_trace_change_points
+    description: Detects statistically significant change points in trace latency and failure rate.
+  - id: observability.get_apm_correlations
+    description: Analyzes APM correlations to identify dimensions associated with slow transactions.
+  platform_core:
+  - id: platform.core.search
+    description: Searches Elasticsearch data using natural language, automatically selecting between
+      query DSL and ES|QL.
+  - id: platform.core.execute_esql
+    description: Executes an ES|QL query and returns the results in a tabular format.
+  - id: platform.core.generate_esql
+    description: Generates an ES|QL query from a natural language query.
+  - id: platform.core.list_indices
+    description: Lists the indices, aliases, and data streams in the Elasticsearch cluster.
+  - id: platform.core.get_index_mapping
+    description: Retrieves mappings for the specified index or indices.
+  - id: platform.core.index_explorer
+    description: Lists relevant indices and corresponding mappings based on a natural language query.
+  - id: platform.core.get_document_by_id
+    description: Retrieves the full content of an Elasticsearch document based on its ID and index name.
+  - id: platform.core.product_documentation
+    description: Searches and retrieves documentation about Elastic products.
+  - id: platform.core.integration_knowledge
+    description: Searches and retrieves knowledge from Fleet-installed integrations.
+  - id: platform.core.create_visualization
+    description: Creates or updates a visualization configuration based on natural language.
+  - id: platform.core.cases
+    description: Searches and retrieves cases for tracking and managing issues.
+  - id: platform.core.cases.manage
+    description: Creates, updates, deletes, and assigns cases, and manages tags and custom fields.
+  platform_streams:
+  - id: platform.streams.inspect_streams
+    description: Inspects streams, returning overview, schema, quality, lifecycle, processing, or routing.
+  - id: platform.streams.diagnose_stream
+    description: Gathers health metrics and failure store error samples for root cause analysis.
+  - id: platform.streams.query_documents
+    description: Queries or aggregates data from a stream using natural language description.
+  - id: platform.streams.design_pipeline
+    description: Designs changes to a stream's processing pipeline from natural language instruction.
+  - id: platform.streams.update_stream
+    description: Updates a stream's configuration, including pipeline and retention lifecycle.
+  - id: platform.streams.delete_stream
+    description: Permanently deletes a stream and all of its child streams.
+summary:
+  tool_count_listed: 34
+  observability_tool_count: 16
+  input_schemas: >-
+    NOT captured. tools/list on a per-customer Kibana host cannot be reached anonymously, so the
+    inputSchema for each tool needs authenticated introspection against a real deployment.

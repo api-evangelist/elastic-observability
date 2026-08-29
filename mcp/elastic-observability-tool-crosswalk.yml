@@ -1,0 +1,127 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  mcp/elastic-observability-mcp.yml (tool ids from
+  https://www.elastic.co/docs/explore-analyze/ai-features/agent-builder/tools/builtin-tools-reference)
+  bound against openapi/elastic-observability-*-openapi.yml
+provider: Elastic Observability
+providerId: elastic-observability
+headline: >-
+  Elastic Observability's MCP surface and its published OpenAPI surface do not overlap at all.
+  The OpenAPI in this repo is the APM Server *intake* contract — the write path telemetry agents
+  use to push events in. The Agent Builder MCP tools are all *read* tools over telemetry that has
+  already landed in Elasticsearch, and they are backed by Kibana APIs Elastic does not publish as
+  OpenAPI in the Observability Intake document. Crosswalk coverage is therefore 0 by fact, not by
+  omission — an agent cannot reach the intake API through MCP, and cannot reach the analysis tools
+  through this OpenAPI.
+surfaces:
+  openapi:
+  - openapi/elastic-observability-server-info-api-openapi.yml
+  - openapi/elastic-observability-agent-config-api-openapi.yml
+  - openapi/elastic-observability-event-intake-api-openapi.yml
+  - openapi/elastic-observability-opentelemetry-intake-api-openapi.yml
+  openapi_gated: false
+  graphql: null
+  mcp: https://{KIBANA_URL}/api/agent_builder/mcp
+  mcp_gated: true
+  mcp_gate_note: >-
+    Per-customer Kibana host + Elastic API key. tools/list cannot be called anonymously, so tool
+    inputSchemas were not introspected and every binding below is by name and documented semantics.
+crosswalk: []
+mcp_only:
+- tool: observability.get_alerts
+  reason: Backed by the Kibana alerting/rules API, not by the APM Server intake contract.
+- tool: observability.get_services
+  reason: Backed by the Kibana APM UI API over indexed traces-apm.* data; no intake operation reads services.
+- tool: observability.get_hosts
+  reason: Infrastructure inventory read from Elasticsearch; no counterpart in the intake contract.
+- tool: observability.get_index_info
+  reason: Elasticsearch index metadata; outside the intake contract.
+- tool: observability.get_trace_metrics
+  reason: Aggregation over already-indexed traces; the intake API only accepts writes.
+- tool: observability.get_service_topology
+  reason: Derived service dependency graph; no published REST operation.
+- tool: observability.get_log_groups
+  reason: Log categorization over indexed data.
+- tool: observability.get_log_change_points
+  reason: Change-point analysis over indexed data.
+- tool: observability.get_metric_change_points
+  reason: Change-point analysis over indexed data.
+- tool: observability.get_traces
+  reason: Read over indexed trace documents.
+- tool: observability.run_log_rate_analysis
+  reason: ML analysis over indexed data.
+- tool: observability.get_anomaly_detection_jobs
+  reason: Elasticsearch ML API surface.
+- tool: observability.get_logs
+  reason: Read over indexed log documents.
+- tool: observability.get_runtime_metrics
+  reason: Read over indexed metric documents.
+- tool: observability.get_trace_change_points
+  reason: Change-point analysis over indexed traces.
+- tool: observability.get_apm_correlations
+  reason: APM correlations analysis; Kibana API, not intake.
+rest_only:
+- operationId: getServerHealth
+  path: /
+  method: get
+  reason: APM Server build/health information; no MCP tool exposes it.
+- operationId: postServerHealth
+  path: /
+  method: post
+  reason: No MCP tool exposes APM Server health.
+- operationId: getAgentConfig
+  path: /config/v1/agents
+  method: get
+  reason: Central APM agent configuration fetch — consumed by APM agents, not by MCP clients.
+- operationId: postAgentConfig
+  path: /config/v1/agents
+  method: post
+  reason: Central APM agent configuration fetch (POST form) — no MCP tool.
+- operationId: getRumAgentConfig
+  path: /config/v1/rum/agents
+  method: get
+  reason: RUM agent configuration fetch — no MCP tool.
+- operationId: postEventIntake
+  path: /intake/v2/events
+  method: post
+  reason: Write-only telemetry ingest; deliberately not exposed as an agent tool.
+- operationId: postRumEventIntakeV2
+  path: /intake/v2/rum/events
+  method: post
+  reason: Write-only RUM ingest.
+- operationId: postRumEventIntakeV3
+  path: /intake/v3/rum/events
+  method: post
+  reason: Write-only RUM ingest.
+- operationId: postOtlpGrpcTraces
+  path: /opentelemetry.proto.collector.trace.v1.TraceService/Export
+  method: post
+  reason: OTLP/gRPC trace ingest.
+- operationId: postOtlpGrpcMetrics
+  path: /opentelemetry.proto.collector.metrics.v1.MetricsService/Export
+  method: post
+  reason: OTLP/gRPC metric ingest.
+- operationId: postOtlpGrpcLogs
+  path: /opentelemetry.proto.collector.logs.v1.LogsService/Export
+  method: post
+  reason: OTLP/gRPC log ingest.
+- operationId: postOtlpHttpTraces
+  path: /v1/traces
+  method: post
+  reason: OTLP/HTTP trace ingest.
+- operationId: postOtlpHttpMetrics
+  path: /v1/metrics
+  method: post
+  reason: OTLP/HTTP metric ingest.
+- operationId: postOtlpHttpLogs
+  path: /v1/logs
+  method: post
+  reason: OTLP/HTTP log ingest.
+coverage:
+  mcp_tools_considered: 16
+  rest_operations: 14
+  bound: 0
+  mcp_only: 16
+  rest_only: 14
+  binding_confidence: n/a

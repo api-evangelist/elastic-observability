@@ -1,0 +1,164 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  Public registry metadata endpoints (registry.npmjs.org, pypi.org, rubygems.org,
+  repo1.maven.org maven-metadata.xml, api.nuget.org flat container, proxy.golang.org) plus
+  api.github.com/releases/latest for agents distributed as OS packages. Cross-checked against
+  https://www.elastic.co/docs/reference/apm/agents and
+  https://www.elastic.co/docs/reference/opentelemetry
+provider: Elastic Observability
+providerId: elastic-observability
+note: >-
+  Elastic Observability's client surface is two generations of agent. The classic Elastic APM
+  agents (elastic-apm-*, co.elastic.apm) speak the /intake/v2 event API in this repo's OpenAPI;
+  the Elastic Distributions of OpenTelemetry (EDOT, co.elastic.otel / @elastic/opentelemetry-node
+  / elastic-opentelemetry) speak the OTLP endpoints in the same spec. Both are first party.
+  Maven Central versions were read from repo1.maven.org maven-metadata.xml because the
+  search.maven.org solr index is stale (it still reported elastic-otel-javaagent 1.4.1 / 2025-04-16
+  against an actual 1.12.0 / 2026-07-31).
+packages:
+- name: elastic-apm-node
+  registry: npm
+  language: JavaScript/Node.js
+  url: https://www.npmjs.com/package/elastic-apm-node
+  official: true
+  version: 4.18.0
+  published: '2026-07-08'
+  role: Classic Elastic APM agent for Node.js — POSTs to /intake/v2/events
+- name: '@elastic/opentelemetry-node'
+  registry: npm
+  language: JavaScript/Node.js
+  url: https://www.npmjs.com/package/@elastic/opentelemetry-node
+  official: true
+  version: 1.17.0
+  published: '2026-07-28'
+  role: EDOT Node.js — OTLP exporter targeting /v1/traces, /v1/metrics, /v1/logs
+- name: '@elastic/apm-rum'
+  registry: npm
+  language: JavaScript (browser)
+  url: https://www.npmjs.com/package/@elastic/apm-rum
+  official: true
+  version: 5.17.5
+  published: '2026-06-30'
+  role: Real User Monitoring agent — POSTs to /intake/v3/rum/events
+- name: '@elastic/mcp-server-elasticsearch'
+  registry: npm
+  language: JavaScript/Node.js
+  url: https://www.npmjs.com/package/@elastic/mcp-server-elasticsearch
+  official: true
+  version: 0.3.1
+  published: '2025-07-01'
+  role: Legacy stdio MCP server for Elasticsearch
+  note: >-
+    Last published 2025-07-01 — over a year stale. Elastic's current documented MCP surface is the
+    Agent Builder MCP endpoint at {KIBANA_URL}/api/agent_builder/mcp (Stack 9.2.0+ / Serverless),
+    which needs no package. Recorded as a decay signal, not as the recommended path.
+- name: elastic-apm
+  registry: pypi
+  language: Python
+  url: https://pypi.org/project/elastic-apm/
+  official: true
+  version: 6.26.2
+  published: '2026-06-22'
+  role: Classic Elastic APM agent for Python
+- name: elastic-opentelemetry
+  registry: pypi
+  language: Python
+  url: https://pypi.org/project/elastic-opentelemetry/
+  official: true
+  version: 1.16.0
+  published: '2026-08-27'
+  role: EDOT Python — OTLP distribution
+- name: elastic-apm
+  registry: rubygems
+  language: Ruby
+  url: https://rubygems.org/gems/elastic-apm
+  official: true
+  version: 4.9.0
+  published: '2026-06-19'
+  role: Classic Elastic APM agent for Ruby
+- name: co.elastic.apm:elastic-apm-agent
+  registry: maven
+  language: Java
+  url: https://central.sonatype.com/artifact/co.elastic.apm/elastic-apm-agent
+  official: true
+  version: 1.56.0
+  published: '2026-06-15'
+  role: Classic Elastic APM Java agent
+  note: version + date read from https://repo1.maven.org/maven2/co/elastic/apm/elastic-apm-agent/maven-metadata.xml
+- name: co.elastic.otel:elastic-otel-javaagent
+  registry: maven
+  language: Java
+  url: https://central.sonatype.com/artifact/co.elastic.otel/elastic-otel-javaagent
+  official: true
+  version: 1.12.0
+  published: '2026-07-31'
+  role: EDOT Java agent
+  note: version + date read from https://repo1.maven.org/maven2/co/elastic/otel/elastic-otel-javaagent/maven-metadata.xml
+- name: Elastic.Apm
+  registry: nuget
+  language: .NET
+  url: https://www.nuget.org/packages/Elastic.Apm
+  official: true
+  version: 1.34.6
+  published: '2026-08-24'
+  role: Classic Elastic APM agent for .NET
+- name: Elastic.OpenTelemetry
+  registry: nuget
+  language: .NET
+  url: https://www.nuget.org/packages/Elastic.OpenTelemetry
+  official: true
+  version: 1.5.0
+  published: '2026-07-30'
+  role: EDOT .NET
+  note: >-
+    Version read from the NuGet flat container index, which carries no publish date; the date is
+    the matching GitHub release elastic/elastic-otel-dotnet 1.5.0 (2026-07-30).
+- name: go.elastic.co/apm/v2
+  registry: gopkg
+  language: Go
+  url: https://pkg.go.dev/go.elastic.co/apm/v2
+  official: true
+  version: v2.7.12
+  published: '2026-06-03'
+  role: Classic Elastic APM agent for Go
+  note: read from https://proxy.golang.org/go.elastic.co/apm/v2/@latest
+- name: elastic/apm-agent-php
+  registry: none
+  language: PHP
+  url: https://github.com/elastic/apm-agent-php/releases
+  official: true
+  version: v1.17.0
+  published: '2026-06-24'
+  role: Classic Elastic APM agent for PHP
+  note: >-
+    No Composer/Packagist package — repo.packagist.org returns 404 for elastic/apm-agent-php. The
+    agent is a native PHP extension shipped as .deb/.rpm/.apk assets on GitHub releases, so the
+    GitHub release tag is the only dated version metadata that exists.
+- name: '@elastic/ecs-pino-format'
+  registry: npm
+  language: JavaScript/Node.js
+  url: https://www.npmjs.com/package/@elastic/ecs-pino-format
+  official: true
+  version: 1.5.0
+  published: '2023-10-31'
+  role: ECS-compatible log formatter for pino
+  note: last published 2023-10-31 — nearly three years stale
+- name: '@elastic/ecs-winston-format'
+  registry: npm
+  language: JavaScript/Node.js
+  url: https://www.npmjs.com/package/@elastic/ecs-winston-format
+  official: true
+  version: 1.5.3
+  published: '2024-03-18'
+  role: ECS-compatible log formatter for winston
+  note: last published 2024-03-18
+summary:
+  package_count: 15
+  official_count: 15
+  registries: [npm, pypi, rubygems, maven, nuget, gopkg, none]
+  languages: [JavaScript/Node.js, Python, Ruby, Java, .NET, Go, PHP]
+  stale_over_12_months:
+  - '@elastic/mcp-server-elasticsearch'
+  - '@elastic/ecs-pino-format'
+  - '@elastic/ecs-winston-format'

@@ -1,0 +1,63 @@
+generated: '2026-08-29'
+method: searched
+source: https://github.com/elastic/elastic-agent
+docs:
+- https://www.elastic.co/docs/reference/fleet/elastic-agent-cmd-options
+- https://www.elastic.co/docs/reference/opentelemetry/edot-collector
+- https://github.com/elastic/elastic-package
+- https://github.com/elastic/ecctl
+provider: Elastic Observability
+providerId: elastic-observability
+note: >-
+  Elastic ships no single "observability CLI". What exists is a set of first-party binaries, each
+  owning one job, and the versions below were read from the GitHub releases API on 2026-08-29 —
+  which is also how the abandonment signal on ecctl surfaced.
+clis:
+- name: elastic-agent
+  primary: true
+  repo: https://github.com/elastic/elastic-agent
+  version: v9.5.2
+  released: '2026-08-20'
+  role: >-
+    The single agent that ships logs, metrics, traces and security data to Elastic. As of Stack
+    9.5.0 the EDOT Collector is folded into elastic-agent rather than shipped separately, so this
+    binary is now also the OpenTelemetry collector that talks to the OTLP paths in this repo's
+    OpenAPI.
+  install:
+  - Download the platform archive from https://www.elastic.co/downloads/elastic-agent
+  - Fleet-managed enrollment from Kibana
+  - Docker / Kubernetes (DaemonSet) manifests
+  commands:
+  - install — enroll and install the agent as a service
+  - enroll — enroll an installed agent with Fleet
+  - run — run the agent in the foreground
+  - status — report agent and component health
+  - diagnostics — collect a diagnostics bundle
+  - inspect — print the resolved configuration
+  - upgrade — upgrade the agent to a given version
+- name: elastic-package
+  primary: false
+  repo: https://github.com/elastic/elastic-package
+  version: v0.126.1
+  released: '2026-08-27'
+  role: Build, test and lint Elastic integration packages; spins up a local test stack.
+  audience: integration developers, not API consumers
+- name: ecctl
+  primary: false
+  repo: https://github.com/elastic/ecctl
+  version: v1.15.0
+  released: '2025-06-13'
+  role: Elastic Cloud Control — manage Elastic Cloud deployments from the command line.
+  note: >-
+    Last release 2025-06-13, over fourteen months before this pass. Recorded as a currency signal,
+    not as a claim that Elastic has retired it.
+- name: apm-server
+  primary: false
+  repo: https://github.com/elastic/apm-server
+  role: >-
+    The APM Server binary itself — the process that SERVES the OpenAPI in this repo. Run
+    standalone for self-managed deployments; on Elastic Cloud it is managed for you.
+  note: >-
+    Listed for completeness because it is the server side of this contract, not a client tool.
+    No release version recorded here — APM Server ships on the Elastic Stack version train
+    (currently 9.5.2), not on its own.

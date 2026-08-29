@@ -1,0 +1,33 @@
+generated: '2026-08-29'
+method: generated
+source: openapi/_original/elastic-observability-observability-intake-openapi.yml
+provider: Elastic Observability
+providerId: elastic-observability
+note: >-
+  Every operationId referenced in these skills was grepped out of the refined OpenAPI in openapi/.
+  Nothing is invented. No skill covers a read/analysis flow, because the published contract has no
+  read surface over telemetry — that lives behind the Agent Builder MCP tools instead (see
+  mcp/elastic-observability-tool-crosswalk.yml).
+skills:
+- name: elastic-observability-send-apm-events
+  file: elastic-observability-send-apm-events.md
+  title: Send APM events
+  summary: Ship transactions, spans and errors over the v2 NDJSON intake API.
+  operations: [postEventIntake]
+- name: elastic-observability-export-otlp-telemetry
+  file: elastic-observability-export-otlp-telemetry.md
+  title: Export OTLP telemetry
+  summary: Send OpenTelemetry traces, metrics and logs over OTLP/HTTP or OTLP/gRPC.
+  operations: [postOtlpHttpTraces, postOtlpHttpMetrics, postOtlpHttpLogs, postOtlpGrpcTraces,
+    postOtlpGrpcMetrics, postOtlpGrpcLogs]
+- name: elastic-observability-fetch-agent-config
+  file: elastic-observability-fetch-agent-config.md
+  title: Fetch central agent configuration
+  summary: Poll central APM agent configuration for a service and environment.
+  operations: [getAgentConfig, postAgentConfig, getRumAgentConfig]
+- name: elastic-observability-check-server-health
+  file: elastic-observability-check-server-health.md
+  title: Check APM Server health
+  summary: Preflight an APM Server before writing irreversible telemetry to it.
+  operations: [getServerHealth, postServerHealth]
+skill_count: 4

@@ -1,0 +1,74 @@
+generated: '2026-08-29'
+method: probed
+source: live HTTP probes of every apis.yml / OpenAPI host
+note: >-
+  Only api.elastic-cloud.com serves a real /.well-known document (security.txt). The other
+  /.well-known paths on that host answer HTTP 200 with a 9,582-byte HTML application shell rather
+  than a document — recorded here as html_shell hits and treated as MISSES, not as served
+  documents. www.elastic.co / elastic.co 404 every path. cloud.es.io did not resolve for a bare
+  apex probe (deployment hostnames are per-customer subdomains).
+hosts:
+- host: api.elastic-cloud.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    file: elastic-observability-security.txt
+  - path: /.well-known/openid-configuration
+    status: 200
+    content_type: text/html
+    html_shell: true
+    note: 200 returns the Elastic Cloud SPA shell, not an OpenID Provider Metadata document — miss
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    content_type: text/html
+    html_shell: true
+    note: 200 returns the SPA shell, not RFC 8414 metadata — miss
+  - path: /.well-known/oauth-protected-resource
+    status: 200
+    content_type: text/html
+    html_shell: true
+    note: 200 returns the SPA shell, not RFC 9728 metadata — miss
+  - path: /.well-known/api-catalog
+    status: 200
+    content_type: text/html
+    html_shell: true
+    note: 200 returns the SPA shell, not an RFC 9727 api-catalog document — miss
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: www.elastic.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: elastic.co
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404

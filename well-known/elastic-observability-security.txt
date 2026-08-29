@@ -1,0 +1,4 @@
+Contact: security@elastic.co
+Encryption: openpgp4fpr:1224D1A572A73755B61A377B14D65EE0D2AE61D2
+Hiring: https://www.elastic.co/about/careers
+Policy: https://www.elastic.co/cloud/security

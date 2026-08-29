@@ -1,12 +1,42 @@
-generated: '2026-07-11'
+generated: '2026-08-29'
 method: searched
 probe: true
 source: https://www.elastic.co/trust
 url: https://www.elastic.co/trust
+provider: Elastic Observability
+providerId: elastic-observability
+assurance_portal:
+  url: https://assurance.elastic.co
+  description: View all certifications and request audit reports.
 certifications:
+- FedRAMP High
+- FedRAMP Moderate
+- PCI DSS (Level 1 Service Provider)
+- CSA STAR
+- ISO/IEC 27001
+- ISO/IEC 27017
+- ISO/IEC 27018
+- SOC 2
+- SOC 3
+- TISAX
+- HIPAA
+- Cyber Essentials Plus
+- IRAP Assessed — Protected B
+- CyberGRX
 - GDPR
+documents:
+- name: Elastic Cloud Service Security Overview
+  format: PDF
+  description: Describes Elastic's information security management system and the controls that
+    secure data.
+security_contact: security@elastic.co
+related:
+- security/elastic-observability-vulnerability-disclosure.yml
+- https://www.elastic.co/cloud/security
 evidence:
 - source: https://www.elastic.co/trust
-  keywords:
-  - trust center
-  - gdpr
+  fetched: '2026-08-29'
+  detail: >-
+    Certification list read directly from the Elastic Trust Center page. The prior version of this
+    artifact recorded only GDPR because it was written by a keyword probe; the page in fact names
+    fifteen programs.

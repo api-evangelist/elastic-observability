@@ -4,86 +4,61 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Elastic Observability
 providerId: elastic-observability
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags:
-  - AIOps
-  - Observability
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Elastic Observability API surface. Captures
-  per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values
-  to be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
-responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
-limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Elastic Observability
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Elastic Observability
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Elastic Observability
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Elastic Observability
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Elastic Observability
+modified: '2026-08-29'
+generated: '2026-08-29'
+method: searched
+source: https://www.elastic.co/docs/reference/opentelemetry/motlp/rate-limiting
+docs:
+- https://www.elastic.co/docs/reference/opentelemetry/motlp/rate-limiting
+- https://www.elastic.co/docs/reference/cloud/cloud-hosted/ec-api-rate-limiting
+replaces: >-
+  A bulk-sweep scaffold dated 2026-05-04 that asserted 10/100/1000 requests-per-minute tiers and
+  100,000 monthly request quotas. None of those numbers are published by Elastic, and the product
+  is not metered per request. Replaced wholesale on 2026-08-29.
+limit_count: 0
+limit_count_note: >-
+  Elastic publishes NO numeric rate limit for the Observability intake API. This is an honest zero,
+  not an unchecked one: the docs state that ingest capacity is a function of the deployment
+  ("Elastic Cloud Hosted: limited by your Elasticsearch cluster capacity"; "Elastic Cloud
+  Serverless: Elastic manages scaling automatically") rather than a published per-key ceiling. The
+  runtime signal below is what an agent actually gets.
+runtime_signals:
+- surface: Elastic Managed OTLP endpoint (/v1/traces, /v1/metrics, /v1/logs and the OTLP gRPC
+    Export paths)
+  status_on_exhaustion: 429
+  grpc_status: 'rpc error: code = ResourceExhausted desc = request exceeded available capacity'
+  headers: []
+  headers_note: >-
+    No Retry-After and no X-RateLimit-*/RateLimit-* header is documented for this surface.
+  scope: per deployment / per project capacity
+  source: https://www.elastic.co/docs/reference/opentelemetry/motlp/rate-limiting
+- surface: Elastic Cloud control-plane API (api.elastic-cloud.com) — adjacent surface, not the
+    intake API
+  status_on_exhaustion: 429
+  headers:
+  - x-ratelimit-limit
+  - x-ratelimit-interval
+  - x-ratelimit-remaining
+  headers_note: >-
+    Elastic documents these three response headers verbatim: "API calls are rate limited in a
+    timing window. The current remaining available calls quota is available through the following
+    header fields, included in each API call response." The window duration and the numeric ceiling
+    are not published.
+  scope: per user, per second (the window value itself is returned in x-ratelimit-interval)
+  source: https://www.elastic.co/docs/reference/cloud/cloud-hosted/ec-api-rate-limiting
+limits: []
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+- name: Backoff
+  description: >-
+    On 429 / ResourceExhausted, OpenTelemetry exporters and Elastic APM agents retry with
+    exponential backoff. Because the intake API is append-only with no idempotency key, a retry
+    after an ambiguous failure can duplicate telemetry — see
+    conventions/elastic-observability-conventions.yml.
+- name: Capacity, not quota
+  description: >-
+    On Elastic Cloud Hosted, ingest throughput is bounded by provisioned cluster capacity; on
+    Serverless, Elastic scales automatically and bills per GB. Neither model exposes a
+    requests-per-minute quota a client can read ahead of time.
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com

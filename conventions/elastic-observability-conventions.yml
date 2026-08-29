@@ -1,0 +1,123 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/_original/elastic-observability-observability-intake-openapi.yml, enriched from
+  https://www.elastic.co/docs/solutions/observability/apm and
+  https://www.elastic.co/docs/reference/opentelemetry/motlp
+provider: Elastic Observability
+providerId: elastic-observability
+shape_note: >-
+  This is a TELEMETRY INGEST contract, not a CRUD resource API, and most cross-cutting conventions
+  are `na` for that reason rather than missing. Saying "no pagination" about an API with no
+  collection endpoints would misread it.
+authentication:
+  styles:
+  - name: apiKeyAuth
+    type: apiKey
+    in: header
+    parameter: Authorization
+    format: 'Authorization: ApiKey <base64-encoded-id:api_key>'
+  - name: secretToken
+    type: http
+    scheme: bearer
+    bearerFormat: Secret token
+    format: 'Authorization: Bearer <secret-token>'
+  note: >-
+    Either scheme satisfies the top-level security requirement — the contract lists them as
+    alternatives, not as a chain. The secret token is provisioned per deployment in Elastic Cloud;
+    the API key is created in Kibana or via the Elasticsearch security API.
+  cross_ref: authentication/elastic-observability-authentication.yml
+idempotency:
+  supported: na
+  header: null
+  detail: >-
+    No Idempotency-Key exists and none is meaningful here. The intake API is an append-only event
+    stream: every NDJSON line becomes a new document, and re-sending the same batch produces
+    duplicate telemetry rather than a replayed-safe no-op. Deduplication, where it happens, is a
+    property of the AGENT's buffer, not of the server contract. OTLP has the same semantics.
+  agent_guidance: >-
+    An agent must never blind-retry a 2xx-uncertain intake POST expecting dedupe. Treat a timed-out
+    ingest as possibly-delivered.
+pagination:
+  supported: na
+  detail: No operation returns a collection; the contract is 11 writes plus 3 config/health reads.
+field_expansion:
+  supported: false
+metadata:
+  supported: true
+  detail: >-
+    Every intake batch begins with a `metadata` NDJSON line (component schemas `metadata` /
+    `MetadataEvent`, and `metadata-2` / `MetadataEventv3` for RUM v3) carrying service, agent, host,
+    process, user, cloud and labels. This is the contract's extensibility point — arbitrary
+    key/value labels ride on the metadata object and on individual events.
+request_id_tracing:
+  supported: true
+  mechanism: W3C Trace Context / OpenTelemetry trace and span ids
+  detail: >-
+    Correlation is the product, not a side channel. Events carry trace.id, transaction.id,
+    parent.id and span.id; the OTLP paths carry standard OpenTelemetry trace context. There is no
+    separate provider-issued X-Request-Id echo on the intake response.
+versioning:
+  style: path
+  detail: >-
+    Intake endpoints version in the path (/intake/v2/events, /intake/v2/rum/events,
+    /intake/v3/rum/events) and the OTLP paths follow OpenTelemetry's own /v1/*. There is no
+    version header and no date-based version.
+  cross_ref: lifecycle/elastic-observability-lifecycle.yml
+error_envelope:
+  shape: undocumented
+  detail: >-
+    No error schema is bound to any response in the contract. See
+    errors/elastic-observability-problem-types.yml.
+  cross_ref: errors/elastic-observability-problem-types.yml
+rate_limit_signaling:
+  headers_on_this_api: none documented
+  headers_on_elastic_cloud_api:
+  - x-ratelimit-limit
+  - x-ratelimit-interval
+  - x-ratelimit-remaining
+  status_on_exhaustion: 429
+  detail: >-
+    The intake contract declares no 429 and no rate-limit headers. Elastic documents 429 for
+    managed OTLP ingest, and documents the three x-ratelimit-* headers on the separate Elastic
+    Cloud control-plane API. No published numbers exist for either.
+  cross_ref: rate-limits/elastic-observability-rate-limits.yml
+content_types:
+  request:
+  - application/x-ndjson (intake v2/v3 — newline-delimited JSON, one event per line)
+  - application/x-protobuf (OTLP)
+  - application/json (OTLP)
+  - application/x-www-form-urlencoded (POST /config/v1/agents)
+  response:
+  - application/json
+compression:
+  supported: true
+  detail: >-
+    APM agents gzip intake payloads; the OTLP exporters use standard OTLP compression. Documented
+    at the agent level rather than as a contract header.
+dry_run_mode:
+  supported: na
+  detail: >-
+    No dry-run/validate-only mode is documented. On an ingest surface the closest equivalent is
+    running APM Server locally (see sandbox/) rather than a server-side rehearsal flag.
+reversibility:
+  grade: na
+  applicable: false
+  detail: >-
+    Every write in this contract is an append to an immutable telemetry stream. There is no cancel,
+    void, refund, undo, rollback or delete operation anywhere in the 14 published operations, and
+    none would be coherent: an ingested span cannot be un-ingested through the intake API.
+  what_governs_removal_instead: >-
+    Telemetry leaves the system through Elasticsearch index lifecycle management and data-stream
+    retention (Streams "Data lifecycle" in 9.5.0+), and through Elasticsearch delete-by-query —
+    both are Elasticsearch/Kibana operations on the STORE, not reversal operations on this API.
+    They are governed by the customer's own retention policy, so no provider-stated window exists
+    to record.
+  reversal_operations: []
+  window: null
+  window_note: >-
+    No window is asserted because Elastic publishes none for this surface. Retention is
+    customer-configured.
+  agent_guidance: >-
+    An agent writing to this API should treat every successful POST as permanent. There is nothing
+    to call to take it back.

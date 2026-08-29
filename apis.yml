@@ -1,7 +1,11 @@
 aid: elastic-observability
 name: Elastic Observability
-description: >-
-  Elastic Observability provides unified logs, metrics, traces, and AI-driven anomaly detection built on the Elastic Stack.
+description: 'Elastic Observability is Elastic''s unified logs, metrics, traces and profiling solution,
+  built on the Elastic Stack. Its published machine-readable contract is the Observability Intake API
+  served by APM Server: a newline-delimited JSON event intake for Elastic APM agents, a central agent-configuration
+  endpoint, and native OpenTelemetry Protocol ingest over both OTLP/HTTP and OTLP/gRPC. Analysis of the
+  telemetry once it has landed happens through Kibana and, for agents, through the Elastic Agent Builder
+  MCP server, which exposes sixteen observability.* tools over a deployment-scoped endpoint.'
 type: Index
 deliveryModel:
   model: unknown
@@ -29,53 +33,35 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/elastic-observability.png
 tags:
-  - AIOps
-  - Observability
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/elastic-observability/refs/heads/main/apis.yml
+- AIOps
+- Observability
+- APM
+- Logging
+- Metrics
+- Tracing
+- OpenTelemetry
+- Monitoring
+- Telemetry
+url: https://raw.githubusercontent.com/api-evangelist/elastic-observability/refs/heads/main/apis.yml
 created: '2026-03-27'
-modified: '2026-03-27'
+modified: '2026-08-29'
 specificationVersion: '0.23'
 apis:
 - aid: elastic-observability:elastic-observability
   name: Elastic Observability
-  description: >-
-    Elastic Observability provides unified logs, metrics, traces, and AI-driven anomaly detection built
-    on the Elastic Stack.
+  description: 'The Elastic Observability product surface: logs, metrics, APM traces, synthetics, RUM,
+    universal profiling and SLOs on the Elastic Stack. The callable contracts are the four APM Server
+    intake APIs listed separately in this file.'
   humanURL: https://www.elastic.co/observability
   tags:
   - AIOps
   properties:
   - type: Documentation
-    url: https://www.elastic.co/guide/en/observability/current/index.html
-- aid: elastic-observability:elastic-observability-agent-configuration-api
-  name: Elastic Observability Agent Configuration API
-  description: >-
-    The Agent Configuration API from Elastic Observability — 2 operation(s) for agent configuration.
-  humanURL: https://www.elastic.co/observability
-  tags:
-  - Agent Configuration
-  properties:
-  - type: OpenAPI
-    url: openapi/elastic-observability-agent-configuration-api-openapi.yml
-- aid: elastic-observability:elastic-observability-intake-api
-  name: Elastic Observability Intake API
-  description: The Intake API from Elastic Observability — 2 operation(s) for intake.
-  humanURL: https://www.elastic.co/observability
-  tags:
-  - Intake
-  properties:
-  - type: OpenAPI
-    url: openapi/elastic-observability-intake-api-openapi.yml
-- aid: elastic-observability:elastic-observability-opentelemetry-api
-  name: Elastic Observability OpenTelemetry API
-  description: The OpenTelemetry API from Elastic Observability — 3 operation(s) for opentelemetry.
-  humanURL: https://www.elastic.co/observability
-  tags:
-  - OpenTelemetry
-  properties:
-  - type: OpenAPI
-    url: openapi/elastic-observability-opentelemetry-api-openapi.yml
+    url: https://www.elastic.co/docs/solutions/observability
+  - type: APIReference
+    url: https://www.elastic.co/docs/api
+  - type: Pricing
+    url: https://www.elastic.co/pricing/serverless-observability
 - aid: elastic-observability:elastic-observability-server-info-api
   name: Elastic Observability Server Info API
   description: The Server Info API from Elastic Observability — 1 operation(s) for server info.
@@ -85,23 +71,158 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/elastic-observability-server-info-api-openapi.yml
-common:
-  - type: AgenticAccess
-    url: agentic-access/elastic-observability-agentic-access.yml
-  - type: TrustCenter
-    url: security/elastic-observability-trust-center.yml
-  - type: DomainSecurity
-    url: security/elastic-observability-domain-security.yml
-  - type: Authentication
-    url: authentication/elastic-observability-authentication.yml
-  - type: Website
-    url: https://www.elastic.co/observability
   - type: Documentation
-    url: https://www.elastic.co/guide/en/observability/current/index.html
-  - type: Integrations
-    url: https://www.elastic.co/integrations
+    url: https://www.elastic.co/docs/solutions/observability/apm
+  - type: Overlay
+    url: overlays/elastic-observability-server-info-overlay.yaml
+  baseURL: https://{deployment}.apm.{region}.cloud.es.io:443
+- aid: elastic-observability:elastic-observability-agent-config-api
+  name: Elastic Observability agent config API
+  description: APIs that query the APM Server for configuration changes.
+  humanURL: https://www.elastic.co/observability
+  tags:
+  - agent config
+  properties:
+  - type: OpenAPI
+    url: openapi/elastic-observability-agent-config-api-openapi.yml
+  - type: Documentation
+    url: https://www.elastic.co/docs/solutions/observability/apm/apm-agents/central-configuration
+  - type: Overlay
+    url: overlays/elastic-observability-agent-config-overlay.yaml
+  baseURL: https://{deployment}.apm.{region}.cloud.es.io:443
+- aid: elastic-observability:elastic-observability-event-intake-api
+  name: Elastic Observability event intake API
+  description: The events intake API is the internal protocol that APM agents use to talk to the APM Server.
+  humanURL: https://www.elastic.co/observability
+  tags:
+  - event intake
+  properties:
+  - type: OpenAPI
+    url: openapi/elastic-observability-event-intake-api-openapi.yml
+  - type: Documentation
+    url: https://www.elastic.co/docs/solutions/observability/apm
+  - type: Overlay
+    url: overlays/elastic-observability-event-intake-overlay.yaml
+  baseURL: https://{deployment}.apm.{region}.cloud.es.io:443
+- aid: elastic-observability:elastic-observability-opentelemetry-intake-api
+  name: Elastic Observability opentelemetry intake API
+  description: 'The OpenTelemetry intake API uses the OpenTelemetry Protocol (OTLP) to send traces, metrics,
+    and logs to APM Server. OTLP is the default transfer protocol for OpenTelemetry and is supported natively
+    by APM Server. APM Server supports two OTLP communication protocols on the same port: OTLP/HTTP (protobuf)
+    and OTLP/gRPC.'
+  humanURL: https://www.elastic.co/observability
+  tags:
+  - opentelemetry intake
+  properties:
+  - type: OpenAPI
+    url: openapi/elastic-observability-opentelemetry-intake-api-openapi.yml
+  - type: Documentation
+    url: https://www.elastic.co/docs/reference/opentelemetry
+  - type: Overlay
+    url: overlays/elastic-observability-opentelemetry-intake-overlay.yaml
+  baseURL: https://{deployment}.apm.{region}.cloud.es.io:443
+common:
+- type: AgenticAccess
+  url: agentic-access/elastic-observability-agentic-access.yml
+- type: TrustCenter
+  url: security/elastic-observability-trust-center.yml
+- type: DomainSecurity
+  url: security/elastic-observability-domain-security.yml
+- type: Authentication
+  url: authentication/elastic-observability-authentication.yml
+- type: Website
+  url: https://www.elastic.co/observability
+- type: Documentation
+  url: https://www.elastic.co/docs/solutions/observability
+- type: Integrations
+  url: https://www.elastic.co/integrations
+- type: Packages
+  url: packages/elastic-observability-packages.yml
+- type: SDKs
+  url: packages/elastic-observability-packages.yml
+- type: WellKnown
+  url: well-known/elastic-observability-well-known.yml
+- type: SecurityTxt
+  url: well-known/elastic-observability-security.txt
+- type: MCPServer
+  url: mcp/elastic-observability-mcp.yml
+- type: ToolCrosswalk
+  url: mcp/elastic-observability-tool-crosswalk.yml
+- type: LLMsTxt
+  url: llms/elastic-observability-llms.txt
+- type: Conformance
+  url: conformance/elastic-observability-conformance.yml
+- type: Compliance
+  url: conformance/elastic-observability-conformance.yml
+- type: ErrorCatalog
+  url: errors/elastic-observability-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/elastic-observability-lifecycle.yml
+- type: StatusPage
+  url: https://status.elastic.co
+- type: Deprecation
+  url: https://www.elastic.co/support/eol
+- type: Conventions
+  url: conventions/elastic-observability-conventions.yml
+- type: ChangeLog
+  url: changelog/elastic-observability-changelog.yml
+- type: CLI
+  url: cli/elastic-observability-cli.yml
+- type: DataModel
+  url: data-model/elastic-observability-data-model.yml
+- type: Sandbox
+  url: sandbox/elastic-observability-sandbox.yml
+- type: VulnerabilityDisclosure
+  url: security/elastic-observability-vulnerability-disclosure.yml
+- type: Security
+  url: https://www.elastic.co/product-security
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Plans
+  url: plans/elastic-observability-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/elastic-observability-rate-limits.yml
+- type: FinOps
+  url: finops/elastic-observability-finops.yml
+- type: DeveloperPortal
+  url: https://www.elastic.co/docs
+- type: APIReference
+  url: https://www.elastic.co/docs/api
+- type: GettingStarted
+  url: https://www.elastic.co/docs/get-started
+- type: Support
+  url: https://www.elastic.co/support
+- type: HelpCenter
+  url: https://discuss.elastic.co
+- type: Blog
+  url: https://www.elastic.co/observability-labs
+- type: GitHubOrganization
+  url: https://github.com/elastic
+- type: Pricing
+  url: https://www.elastic.co/pricing/serverless-observability
+- type: SignUp
+  url: https://cloud.elastic.co/registration
+- type: TermsOfService
+  url: https://www.elastic.co/legal/terms-of-use
+- type: PrivacyPolicy
+  url: https://www.elastic.co/legal/privacy-statement
 integrations:
-  - name: Become a partner
+- name: Become a partner
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-29'
+  status: enriched
+  artifacts_added: 28
+  pass: local-v1
+x-pointer-verification:
+  checked: '2026-08-29'
+  method: curl -L with a browser User-Agent; final status and effective URL recorded
+  all_live: true
+  note: 'Every common[] and properties[] URL in this file returned HTTP 200 on 2026-08-29. Two were rewritten
+    to their redirect targets rather than left pointing at a 301: the Observability documentation link
+    moved from /guide/en/observability/current/index.html to /docs/solutions/observability, and the security
+    policy from /community/security to /product-security. No pointer was removed as dead.'
+x-parent: elastic
+x-relationship: product

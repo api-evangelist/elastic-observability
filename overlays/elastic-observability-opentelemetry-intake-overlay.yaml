@@ -1,0 +1,64 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Observability Intake opentelemetry intake API (opentelemetry-intake)
+  version: 1.0.0
+extends: openapi/elastic-observability-opentelemetry-intake-api-openapi.yml
+x-provenance:
+  generated: '2026-08-29'
+  method: generated
+  source: Derived from Elastic's own documentation; never mutates openapi/_original/elastic-observability-observability-intake-openapi.yml.
+actions:
+- target: $
+  description: 'Replace the placeholder relative server with the real deployment-scoped hosts Elastic
+    documents. The published contract ships servers: [{url: ''/''}], which names no host at all; Elastic
+    documents the Elastic Cloud APM Server address as https://<hash>.apm.<region>.cloud.es.io:443 and
+    the self-managed default as http://localhost:8200.'
+  update:
+    servers:
+    - url: https://{deployment}.apm.{region}.cloud.es.io:443
+      description: Elastic Cloud Hosted APM Server — deployment-scoped host, from the Elastic Cloud console
+      variables:
+        deployment:
+          default: deployment
+          description: Deployment hash from the Elastic Cloud console
+        region:
+          default: us-east-1
+          description: Elastic Cloud region
+    - url: http://{host}:{port}
+      description: Self-managed / Elastic Cloud Enterprise APM Server
+      variables:
+        host:
+          default: localhost
+        port:
+          default: '8200'
+- target: $.paths['/v1/traces'].post
+  description: 'Record the 429 Elastic documents for managed OTLP ingest, which the published contract
+    omits (it declares 200 only). Source: https://www.elastic.co/docs/reference/opentelemetry/motlp/rate-limiting'
+  update:
+    responses:
+      '429':
+        description: 'Too Many Requests — request exceeded available capacity. OTLP/gRPC surfaces this
+          as ''rpc error: code = ResourceExhausted desc = request exceeded available capacity''. No Retry-After
+          or X-RateLimit-* header is documented.'
+- target: $.paths['/v1/metrics'].post
+  description: Record the documented 429 on managed OTLP metric ingest.
+  update:
+    responses:
+      '429':
+        description: Too Many Requests — request exceeded available capacity.
+- target: $.paths['/v1/logs'].post
+  description: Record the documented 429 on managed OTLP log ingest.
+  update:
+    responses:
+      '429':
+        description: Too Many Requests — request exceeded available capacity.
+- target: $.info
+  description: Flag the domain standard this contract declares, so a machine reading the spec can see
+    it without parsing path names.
+  update:
+    x-domain-standard:
+      id: otlp
+      name: OpenTelemetry Protocol
+      evidence: OTLP/HTTP /v1/* paths and OTLP/gRPC *Service/Export paths with application/x-protobuf
+        and application/json bodies
+      docs: https://www.elastic.co/docs/reference/opentelemetry

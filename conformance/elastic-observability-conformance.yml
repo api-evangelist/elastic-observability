@@ -1,0 +1,153 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  openapi/_original/elastic-observability-observability-intake-openapi.yml plus
+  https://www.elastic.co/trust and https://www.elastic.co/docs/reference/opentelemetry
+provider: Elastic Observability
+providerId: elastic-observability
+standards:
+- id: otlp
+  name: OpenTelemetry Protocol (OTLP)
+  conforms: true
+  domain_standard: true
+  evidence:
+    type: contract
+    location: >-
+      openapi/elastic-observability-opentelemetry-intake-api-openapi.yml — six operations named
+      for the OTLP wire contract: POST /v1/traces (postOtlpHttpTraces), POST /v1/metrics
+      (postOtlpHttpMetrics), POST /v1/logs (postOtlpHttpLogs) for OTLP/HTTP, and POST
+      /opentelemetry.proto.collector.{trace,metrics,logs}.v1.{Trace,Metrics,Logs}Service/Export
+      (postOtlpGrpcTraces / postOtlpGrpcMetrics / postOtlpGrpcLogs) for OTLP/gRPC. The request
+      bodies accept application/x-protobuf and application/json, which is exactly the OTLP
+      encoding pair.
+    docs: https://www.elastic.co/docs/reference/opentelemetry
+    tag_description: >-
+      The spec's own tag text states "The OpenTelemetry intake API uses the OpenTelemetry Protocol
+      (OTLP) to send traces, metrics, and logs to APM Server. OTLP is the default transfer protocol
+      for OpenTelemetry and is supported natively by APM Server. APM Server supports two OTLP
+      communication protocols on the same port: OTLP/HTTP (protobuf) and OTLP/gRPC."
+  note: >-
+    This is the domain standard for the observability market and Elastic declares it IN THE
+    CONTRACT, not only on a marketing page. A buyer already emitting OTLP can point an existing
+    collector at Elastic with no bespoke connector.
+- id: opentelemetry-semantic-conventions
+  name: OpenTelemetry Semantic Conventions
+  conforms: true
+  domain_standard: true
+  evidence:
+    type: docs
+    location: https://www.elastic.co/docs/reference/opentelemetry
+    detail: >-
+      Elastic ships Elastic Distributions of OpenTelemetry (EDOT) for Java, .NET, Node.js, Python,
+      PHP, Android and iOS plus an EDOT Collector; these are upstream OpenTelemetry SDKs with
+      Elastic defaults, so they emit standard semantic-convention attributes. Elastic Common Schema
+      (ECS) was contributed to OpenTelemetry Semantic Conventions in 2023.
+- id: ecs
+  name: Elastic Common Schema (ECS)
+  conforms: true
+  domain_standard: true
+  evidence:
+    type: packages
+    location: >-
+      packages/elastic-observability-packages.yml — first-party ECS logging formatters
+      (@elastic/ecs-pino-format, @elastic/ecs-winston-format) published to npm.
+    docs: https://www.elastic.co/docs/reference/ecs
+  note: Elastic-originated field schema, now merged into OpenTelemetry Semantic Conventions.
+- id: oauth2
+  name: OAuth 2.0
+  conforms: partial
+  evidence:
+    type: docs
+    location: https://www.elastic.co/docs/explore-analyze/ai-features/agent-builder/mcp-server
+    detail: >-
+      The Agent Builder MCP server documents "OAuth 2.1 authentication using an application
+      connection" as an alternative to API keys. The APM Server intake OpenAPI declares NO oauth2
+      securityScheme — only apiKeyAuth (Authorization header) and secretToken (HTTP bearer).
+      /.well-known/oauth-authorization-server on api.elastic-cloud.com answers 200 with an HTML
+      application shell, not RFC 8414 metadata, so no authorization-server document is discoverable.
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence:
+    type: probe
+    location: https://api.elastic-cloud.com/.well-known/openid-configuration
+    detail: >-
+      HTTP 200 but the body is the Elastic Cloud SPA shell (text/html, 9,582 bytes), not an OpenID
+      Provider Metadata document. www.elastic.co and elastic.co 404 the path. Recorded as a miss.
+    note: >-
+      Elasticsearch itself can act as an OIDC *relying party* for cluster login; that is a
+      deployment feature, not a discoverable OIDC surface on this API.
+- id: rfc9457
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence:
+    type: contract
+    location: openapi/_original/elastic-observability-observability-intake-openapi.yml
+    detail: >-
+      Only two non-2xx responses are declared in the whole contract (403 and 503 on POST
+      /config/v1/agents) and neither declares a content type, let alone application/problem+json.
+- id: idempotency
+  name: Idempotency keys
+  conforms: false
+  evidence:
+    type: contract
+    location: openapi/_original/elastic-observability-observability-intake-openapi.yml
+    detail: >-
+      No Idempotency-Key header, parameter or extension appears anywhere in the contract or in the
+      APM intake documentation. See conventions/elastic-observability-conventions.yml for why
+      idempotency is `na` on a telemetry ingest surface.
+- id: pagination
+  name: Pagination
+  conforms: false
+  evidence:
+    type: contract
+    location: openapi/_original/elastic-observability-observability-intake-openapi.yml
+    detail: >-
+      No collection-returning operation exists — the contract is 11 write operations plus 3
+      configuration/health reads. Pagination is not applicable.
+- id: soc2
+  name: SOC 2 / SOC 3
+  conforms: true
+  evidence:
+    type: docs
+    location: https://www.elastic.co/trust
+    detail: SOC 2 and SOC 3 listed; audit reports available on request via https://assurance.elastic.co
+- id: iso27001
+  name: ISO/IEC 27001 (with 27017 and 27018)
+  conforms: true
+  evidence:
+    type: docs
+    location: https://www.elastic.co/trust
+- id: fedramp
+  name: FedRAMP
+  conforms: true
+  evidence:
+    type: docs
+    location: https://www.elastic.co/trust
+    detail: FedRAMP High and FedRAMP Moderate both listed.
+- id: pci-dss
+  name: PCI DSS
+  conforms: true
+  evidence:
+    type: docs
+    location: https://www.elastic.co/trust
+    detail: Level 1 Service Provider.
+- id: hipaa
+  name: HIPAA
+  conforms: true
+  evidence:
+    type: docs
+    location: https://www.elastic.co/trust
+- id: gdpr
+  name: GDPR
+  conforms: true
+  evidence:
+    type: docs
+    location: https://www.elastic.co/trust
+summary:
+  domain_standard_declared: otlp
+  domain_standard_evidence: contract
+  compliance_programs: 9
+  conforms_true: 9
+  conforms_false: 4
+  conforms_partial: 1

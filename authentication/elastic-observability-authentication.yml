@@ -1,6 +1,7 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/elastic-observability-openapi.yml
+generated: '2026-08-29'
+method: searched
+source: 'openapi/elastic-observability-*-openapi.yml (schemes) enriched from Elastic''s own APM authentication
+  docs listed under docs:'
 summary:
   types:
   - apiKey
@@ -8,15 +9,49 @@ summary:
   api_key_in:
   - header
 schemes:
-- name: bearerAuth
-  type: http
-  scheme: bearer
-  bearerFormat: Secret token
-  sources:
-  - openapi/elastic-observability-openapi.yml
 - name: apiKeyAuth
   type: apiKey
   in: header
   parameter: Authorization
+  description: 'e.g. Authorization: ApiKey base64AccessApiKey'
   sources:
-  - openapi/elastic-observability-openapi.yml
+  - openapi/elastic-observability-agent-config-api-openapi.yml
+  - openapi/elastic-observability-event-intake-api-openapi.yml
+  - openapi/elastic-observability-opentelemetry-intake-api-openapi.yml
+  - openapi/elastic-observability-server-info-api-openapi.yml
+  header_format: 'Authorization: ApiKey <base64(id:api_key)>'
+  issued_by: Kibana / Elasticsearch security API — created per deployment, scoped by privileges
+  docs: https://www.elastic.co/docs/deploy-manage/api-keys
+  revocable: true
+- name: secretToken
+  type: http
+  scheme: bearer
+  bearerFormat: Secret token
+  sources:
+  - openapi/elastic-observability-agent-config-api-openapi.yml
+  - openapi/elastic-observability-event-intake-api-openapi.yml
+  - openapi/elastic-observability-opentelemetry-intake-api-openapi.yml
+  - openapi/elastic-observability-server-info-api-openapi.yml
+  header_format: 'Authorization: Bearer <secret-token>'
+  issued_by: Provisioned automatically when an Elastic Cloud Hosted or Elastic Cloud Enterprise deployment
+    is created; found and reset in the Cloud console under the deployment's APM & Fleet page.
+  docs: https://www.elastic.co/docs/solutions/observability/apm/secret-token
+  scope: one shared token per APM Server — it authorizes agents, it does not identify them
+  note: Both the agent and the APM Server must be configured with the same secret token. Because it
+    is shared and unscoped, an API key is the stronger choice where per-agent revocation matters.
+docs:
+- https://www.elastic.co/docs/solutions/observability/apm/secret-token
+- https://www.elastic.co/docs/solutions/observability/apm/api-keys
+- https://www.elastic.co/docs/deploy-manage/api-keys
+note: 'The two schemes are ALTERNATIVES, not a chain — the contract lists them as separate top-level
+  security requirements, so an agent sends one Authorization header, never both. Neither is OAuth: the
+  intake API declares no oauth2 securityScheme and no scopes exist to derive, which is why scopes/ is
+  absent from this repo rather than empty.'
+adjacent_surfaces:
+- surface: Elastic Agent Builder MCP server
+  methods:
+  - API key
+  - OAuth 2.1 authentication using an application connection
+  docs: https://www.elastic.co/docs/explore-analyze/ai-features/agent-builder/mcp-server
+  note: The only place Elastic documents OAuth for an Observability-adjacent surface. It is NOT part
+    of the intake contract above.
