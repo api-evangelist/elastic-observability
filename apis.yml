@@ -81,6 +81,8 @@ apis:
   description: APIs that query the APM Server for configuration changes.
   humanURL: https://www.elastic.co/observability
   tags:
+  - Agent Config
+  tags_raw:
   - agent config
   properties:
   - type: OpenAPI
