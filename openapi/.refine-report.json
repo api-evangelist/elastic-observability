@@ -15,7 +15,12 @@
   "notes": [
     "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
     "elastic-observability-observability-intake-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "apis.yml register: written (+0 apis, 5 total)"
+    "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "elastic-observability-agent-config-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "elastic-observability-event-intake-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "elastic-observability-opentelemetry-intake-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "elastic-observability-server-info-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

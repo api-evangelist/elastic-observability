@@ -1,0 +1,39 @@
+# Front Door AI Index — elastic-observability — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: elastic-observability
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.elastic.co
+  final_host: www.elastic.co
+  ownership: unresolved
+  owner: null
+  shares_host_with:
+  - elastic-stack
+  - elasticsearch
+  - elk-stack
+  - kibana
+  inherited_from: null
+  verdict: scored
+  score: null
+  host_score: 25
+  density: null
+  words: 1246
+  tiers:
+    agentic: 5
+    core: 20
+    model: 0
+  ambiguous: 8
+  top_terms:
+    AI: 16
+    agent: 7
+    embedding: 2
+    AI agent: 1
+    LLMs: 1
+    ML: 1
+    automation: 1
+    generative ai: 1
+    inference: 1
+    machine learning: 1
+    vector database: 1

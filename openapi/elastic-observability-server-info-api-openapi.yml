@@ -14,7 +14,7 @@ security:
 - apiKeyAuth: []
 - secretToken: []
 tags:
-- name: server info
+- name: Server Info
   description: APIs that query general APM Server information.
   x-displayName: APM server information
 paths:
@@ -23,12 +23,10 @@ paths:
       summary: Get general server information
       description: 'This lightweight endpoint is useful as a server up/down health check.
 
-        To configure authenticated access to the APM server, the instructions at [APM API key](https://www.elastic.co/guide/en/observability/current/api-key.html) or [APM Secret Token](https://www.elastic.co/guide/en/observability/current/secret-token.html) must be followed to configure the correct permissions for APM access.
-
-        '
+        To configure authenticated access to the APM server, the instructions at APM API key or APM Secret Token must be followed to configure the correct permissions for APM access.'
       operationId: getServerHealth
       tags:
-      - server info
+      - Server Info
       responses:
         '200':
           $ref: '#/components/responses/200_server_info'
@@ -36,7 +34,7 @@ paths:
       summary: Get general server information
       operationId: postServerHealth
       tags:
-      - server info
+      - Server Info
       responses:
         '200':
           $ref: '#/components/responses/200_server_info'

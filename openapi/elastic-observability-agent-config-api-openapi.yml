@@ -14,19 +14,17 @@ security:
 - apiKeyAuth: []
 - secretToken: []
 tags:
-- name: agent config
+- name: Agent Config
   description: APIs that query the APM Server for configuration changes.
   x-displayName: APM agent configuration
 paths:
   /config/v1/agents:
     get:
       summary: Get agent configuration changes
-      description: 'To configure authenticated access to the APM server, the instructions at [APM API key](https://www.elastic.co/guide/en/observability/current/api-key.html) or [APM Secret Token](https://www.elastic.co/guide/en/observability/current/secret-token.html) must be followed to configure the correct permissions for APM access.
-
-        '
+      description: To configure authenticated access to the APM server, the instructions at APM API key or APM Secret Token must be followed to configure the correct permissions for APM access.
       operationId: getAgentConfig
       tags:
-      - agent config
+      - Agent Config
       parameters:
       - in: query
         name: service.name
@@ -46,12 +44,10 @@ paths:
                 type: object
     post:
       summary: Get agent configuration changes
-      description: 'To configure authenticated access to the APM server, the instructions at [APM API key](https://www.elastic.co/guide/en/observability/current/api-key.html) or [APM Secret Token](https://www.elastic.co/guide/en/observability/current/secret-token.html) must be followed to configure the correct permissions for APM access.
-
-        '
+      description: To configure authenticated access to the APM server, the instructions at APM API key or APM Secret Token must be followed to configure the correct permissions for APM access.
       operationId: postAgentConfig
       tags:
-      - agent config
+      - Agent Config
       requestBody:
         content:
           application/json:
@@ -114,12 +110,10 @@ paths:
   /config/v1/rum/agents:
     get:
       summary: Get RUM agent configuration changes
-      description: 'To configure authenticated access to the APM server, the instructions at [APM API key](https://www.elastic.co/guide/en/observability/current/api-key.html) or [APM Secret Token](https://www.elastic.co/guide/en/observability/current/secret-token.html) must be followed to configure the correct permissions for APM access.
-
-        '
+      description: To configure authenticated access to the APM server, the instructions at APM API key or APM Secret Token must be followed to configure the correct permissions for APM access.
       operationId: getRumAgentConfig
       tags:
-      - agent config
+      - Agent Config
       responses:
         '200':
           description: Successful response.
