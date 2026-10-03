@@ -84,51 +84,6 @@ paths:
           description: Successful response; all events succeeded.
 components:
   examples:
-    metricSetEventIntakeRequestExample:
-      summary: A request body example for the metricset event type.
-      value:
-        metricset:
-          samples:
-            transaction.breakdown.count:
-              value: 12
-            transaction.duration.sum.us:
-              value: 12
-            transaction.duration.count:
-              value: 2
-            transaction.self_time.sum.us:
-              value: 10
-            transaction.self_time.count:
-              value: 2
-            span.self_time.count:
-              value: 1
-            span.self_time.sum.us:
-              value: 633.288
-            byte_counter:
-              value: 1
-            short_counter:
-              value: 227
-            integer_gauge:
-              value: 42767
-            long_gauge:
-              value: 3147483648
-            float_gauge:
-              value: 9.16
-            double_gauge:
-              value: 3.141592653589793
-            dotted.float.gauge:
-              value: 6.12
-            negative.d.o.t.t.e.d:
-              value: -1022
-          tags:
-            code: 200
-            success: true
-          transaction:
-            type: request
-            name: GET/
-          span:
-            type: db
-            subtype: mysql
-          timestamp: 1571657444929001
     metadataEventIntakeRequestExample:
       summary: A request body example for the metadata event type.
       value:
@@ -176,174 +131,62 @@ components:
             group: experimental
             ab_testing: true
             segment: 5
+    metricSetEventIntakeRequestExample:
+      summary: A request body example for the metricset event type.
+      value:
+        metricset:
+          samples:
+            transaction.breakdown.count:
+              value: 12
+            transaction.duration.sum.us:
+              value: 12
+            transaction.duration.count:
+              value: 2
+            transaction.self_time.sum.us:
+              value: 10
+            transaction.self_time.count:
+              value: 2
+            span.self_time.count:
+              value: 1
+            span.self_time.sum.us:
+              value: 633.288
+            byte_counter:
+              value: 1
+            short_counter:
+              value: 227
+            integer_gauge:
+              value: 42767
+            long_gauge:
+              value: 3147483648
+            float_gauge:
+              value: 9.16
+            double_gauge:
+              value: 3.141592653589793
+            dotted.float.gauge:
+              value: 6.12
+            negative.d.o.t.t.e.d:
+              value: -1022
+          tags:
+            code: 200
+            success: true
+          transaction:
+            type: request
+            name: GET/
+          span:
+            type: db
+            subtype: mysql
+          timestamp: 1571657444929001
   schemas:
-    MetadataEvent:
+    ErrorEvent:
       type: object
-      description: "Every new connection to the APM Server starts with a metadata stanza. This provides general metadata concerning the other objects in the stream. Rather than send this metadata information from the agent multiple times, the APM Server hangs on to this information and applies it to other objects in the stream as necessary. TIP: Metadata is stored under context when viewing documents in Elasticsearch. APM agents automatically read Kubernetes data and send it to the APM Server. In most instances, agents are able to read this data from inside the container. If this is not the case, or if you wish to override this data, you can set environment variables for the agents to read. These environment variable are set via the Kubernetes Downward API. \n"
+      description: 'Errors are events that occur in a monitored service and correspond to an error or a logged message captured by an agent.
+
+        '
       required:
-      - metadata
+      - error
       properties:
-        metadata:
-          $ref: '#/components/schemas/metadata'
-    metadata-2:
-      $id: docs/spec/rumv3/metadata
-      type: object
-      properties:
-        l:
-          description: Labels are a flat mapping of user-defined tags. Allowed value types are string, boolean and number values. Labels are indexed and searchable.
-          type:
-          - 'null'
-          - object
-          additionalProperties:
-            type:
-            - 'null'
-            - string
-            - boolean
-            - number
-            maxLength: 1024
-        n:
-          description: Network holds information about the network over which the monitored service is communicating.
-          type:
-          - 'null'
-          - object
-          properties:
-            c:
-              type:
-              - 'null'
-              - object
-              properties:
-                t:
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-        se:
-          description: Service metadata about the monitored service.
-          type: object
-          properties:
-            a:
-              description: Agent holds information about the APM agent capturing the event.
-              type: object
-              properties:
-                n:
-                  description: Name of the APM agent capturing information.
-                  type: string
-                  maxLength: 1024
-                  minLength: 1
-                ve:
-                  description: Version of the APM agent capturing information.
-                  type: string
-                  maxLength: 1024
-              required:
-              - n
-              - ve
-            en:
-              description: Environment in which the monitored service is running, e.g. `production` or `staging`.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            fw:
-              description: Framework holds information about the framework used in the monitored service.
-              type:
-              - 'null'
-              - object
-              properties:
-                n:
-                  description: Name of the used framework
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-                ve:
-                  description: Version of the used framework
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-            la:
-              description: Language holds information about the programming language of the monitored service.
-              type:
-              - 'null'
-              - object
-              properties:
-                n:
-                  description: Name of the used programming language
-                  type: string
-                  maxLength: 1024
-                ve:
-                  description: Version of the used programming language
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-              required:
-              - n
-            n:
-              description: Name of the monitored service.
-              type: string
-              maxLength: 1024
-              minLength: 1
-              pattern: ^[a-zA-Z0-9 _-]+$
-            ru:
-              description: Runtime holds information about the language runtime running the monitored service
-              type:
-              - 'null'
-              - object
-              properties:
-                n:
-                  description: Name of the language runtime
-                  type: string
-                  maxLength: 1024
-                ve:
-                  description: Name of the language runtime
-                  type: string
-                  maxLength: 1024
-              required:
-              - n
-              - ve
-            ve:
-              description: Version of the monitored service.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-          required:
-          - a
-          - n
-        u:
-          description: User metadata, which can be overwritten on a per event basis.
-          type:
-          - 'null'
-          - object
-          properties:
-            em:
-              description: Email of the user.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            id:
-              description: ID identifies the logged in user, e.g. can be the primary key of the user
-              type:
-              - 'null'
-              - string
-              - integer
-              maxLength: 1024
-            ud:
-              description: Domain of the user
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            un:
-              description: Name of the user.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-      required:
-      - se
+        error:
+          $ref: '#/components/schemas/error'
     transaction:
       $id: docs/spec/v2/transaction
       type: object
@@ -1152,6 +995,614 @@ components:
       - type
       - span_count
       - duration
+    TransactionEvent:
+      type: object
+      description: 'Transactions are events corresponding to an incoming request or similar task occurring in a monitored service.
+
+        '
+      required:
+      - transaction
+      properties:
+        transaction:
+          $ref: '#/components/schemas/transaction'
+    MetadataEventv3:
+      type: object
+      required:
+      - metadata
+      properties:
+        metadata:
+          $ref: '#/components/schemas/metadata-2'
+    error-2:
+      $id: docs/spec/rumv3/error
+      type: object
+      properties:
+        c:
+          description: Context holds arbitrary contextual information for the event.
+          type:
+          - 'null'
+          - object
+          properties:
+            cu:
+              description: Custom can contain additional metadata to be stored with the event. The format is unspecified and can be deeply nested objects. The information will not be indexed or searchable in Elasticsearch.
+              type:
+              - 'null'
+              - object
+            g:
+              description: Tags are a flat mapping of user-defined tags. Allowed value types are string, boolean and number values. Tags are indexed and searchable.
+              type:
+              - 'null'
+              - object
+              additionalProperties:
+                type:
+                - 'null'
+                - string
+                - boolean
+                - number
+                maxLength: 1024
+            p:
+              description: Page holds information related to the current page and page referers. It is only sent from RUM agents.
+              type:
+              - 'null'
+              - object
+              properties:
+                rf:
+                  description: Referer holds the URL of the page that 'linked' to the current page.
+                  type:
+                  - 'null'
+                  - string
+                url:
+                  description: URL of the current page
+                  type:
+                  - 'null'
+                  - string
+            q:
+              description: Request describes the HTTP request information in case the event was created as a result of an HTTP request.
+              type:
+              - 'null'
+              - object
+              properties:
+                en:
+                  description: Env holds environment variable information passed to the monitored service.
+                  type:
+                  - 'null'
+                  - object
+                he:
+                  description: Headers includes any HTTP headers sent by the requester. Cookies will be taken by headers if supplied.
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    '[.*]*$':
+                      type:
+                      - 'null'
+                      - array
+                      - string
+                      items:
+                        type: string
+                hve:
+                  description: HTTPVersion holds information about the used HTTP version.
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+                mt:
+                  description: Method holds information about the method of the HTTP request.
+                  type: string
+                  maxLength: 1024
+              required:
+              - mt
+            r:
+              description: Response describes the HTTP response information in case the event was created as a result of an HTTP request.
+              type:
+              - 'null'
+              - object
+              properties:
+                dbs:
+                  description: DecodedBodySize holds the size of the decoded payload.
+                  type:
+                  - 'null'
+                  - integer
+                ebs:
+                  description: EncodedBodySize holds the size of the encoded payload.
+                  type:
+                  - 'null'
+                  - integer
+                he:
+                  description: Headers holds the http headers sent in the http response.
+                  type:
+                  - 'null'
+                  - object
+                  additionalProperties: false
+                  patternProperties:
+                    '[.*]*$':
+                      type:
+                      - 'null'
+                      - array
+                      - string
+                      items:
+                        type: string
+                sc:
+                  description: StatusCode sent in the http response.
+                  type:
+                  - 'null'
+                  - integer
+                ts:
+                  description: TransferSize holds the total size of the payload.
+                  type:
+                  - 'null'
+                  - integer
+            se:
+              description: Service related information can be sent per event. Information provided here will override the more generic information retrieved from metadata, missing service fields will be retrieved from the metadata information.
+              type:
+              - 'null'
+              - object
+              properties:
+                a:
+                  description: Agent holds information about the APM agent capturing the event.
+                  type:
+                  - 'null'
+                  - object
+                  properties:
+                    n:
+                      description: Name of the APM agent capturing information.
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                    ve:
+                      description: Version of the APM agent capturing information.
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                en:
+                  description: Environment in which the monitored service is running, e.g. `production` or `staging`.
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+                fw:
+                  description: Framework holds information about the framework used in the monitored service.
+                  type:
+                  - 'null'
+                  - object
+                  properties:
+                    n:
+                      description: Name of the used framework
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                    ve:
+                      description: Version of the used framework
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                la:
+                  description: Language holds information about the programming language of the monitored service.
+                  type:
+                  - 'null'
+                  - object
+                  properties:
+                    n:
+                      description: Name of the used programming language
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                    ve:
+                      description: Version of the used programming language
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                n:
+                  description: Name of the monitored service.
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+                  pattern: ^[a-zA-Z0-9 _-]+$
+                ru:
+                  description: Runtime holds information about the language runtime running the monitored service
+                  type:
+                  - 'null'
+                  - object
+                  properties:
+                    n:
+                      description: Name of the language runtime
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                    ve:
+                      description: Version of the language runtime
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                ve:
+                  description: Version of the monitored service.
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+            u:
+              description: User holds information about the correlated user for this event. If user data are provided here, all user related information from metadata is ignored, otherwise the metadata's user information will be stored with the event.
+              type:
+              - 'null'
+              - object
+              properties:
+                em:
+                  description: Email of the user.
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+                id:
+                  description: ID identifies the logged in user, e.g. can be the primary key of the user
+                  type:
+                  - 'null'
+                  - string
+                  - integer
+                  maxLength: 1024
+                ud:
+                  description: Domain of the user
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+                un:
+                  description: Name of the user.
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+        cl:
+          description: Culprit identifies the function call which was the primary perpetrator of this event.
+          type:
+          - 'null'
+          - string
+          maxLength: 1024
+        ex:
+          description: Exception holds information about the original error. The information is language specific.
+          type:
+          - 'null'
+          - object
+          properties:
+            at:
+              description: Attributes of the exception.
+              type:
+              - 'null'
+              - object
+            ca:
+              description: Cause can hold a collection of error exceptions representing chained exceptions. The chain starts with the outermost exception, followed by its cause, and so on.
+              type:
+              - 'null'
+              - array
+              items:
+                type: object
+              minItems: 0
+            cd:
+              description: Code that is set when the error happened, e.g. database error code.
+              type:
+              - 'null'
+              - string
+              - integer
+              maxLength: 1024
+            hd:
+              description: Handled indicates whether the error was caught in the code or not.
+              type:
+              - 'null'
+              - boolean
+            mg:
+              description: Message contains the originally captured error message.
+              type:
+              - 'null'
+              - string
+            mo:
+              description: Module describes the exception type's module namespace.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            st:
+              description: Stacktrace information of the captured exception.
+              type:
+              - 'null'
+              - array
+              items:
+                type: object
+                properties:
+                  ap:
+                    description: AbsPath is the absolute path of the frame's file.
+                    type:
+                    - 'null'
+                    - string
+                  cli:
+                    description: ContextLine is the line from the frame's file.
+                    type:
+                    - 'null'
+                    - string
+                  cn:
+                    description: Classname of the frame.
+                    type:
+                    - 'null'
+                    - string
+                  co:
+                    description: ColumnNumber of the frame.
+                    type:
+                    - 'null'
+                    - integer
+                  f:
+                    description: Filename is the relative name of the frame's file.
+                    type: string
+                  fn:
+                    description: Function represented by the frame.
+                    type:
+                    - 'null'
+                    - string
+                  li:
+                    description: LineNumber of the frame.
+                    type:
+                    - 'null'
+                    - integer
+                  mo:
+                    description: Module to which the frame belongs to.
+                    type:
+                    - 'null'
+                    - string
+                  poc:
+                    description: PostContext is a slice of code lines immediately before the line from the frame's file.
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type: string
+                    minItems: 0
+                  prc:
+                    description: PreContext is a slice of code lines immediately after the line from the frame's file.
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type: string
+                    minItems: 0
+                required:
+                - f
+              minItems: 0
+            t:
+              description: Type of the exception.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+          anyOf:
+          - properties:
+              mg:
+                type: string
+            required:
+            - mg
+          - properties:
+              t:
+                type: string
+            required:
+            - t
+        id:
+          description: ID holds the hex encoded 128 random bits ID of the event.
+          type: string
+          maxLength: 1024
+        log:
+          description: Log holds additional information added when the error is logged.
+          type:
+          - 'null'
+          - object
+          properties:
+            ln:
+              description: LoggerName holds the name of the used logger instance.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            lv:
+              description: Level represents the severity of the recorded log.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            mg:
+              description: Message of the logged error. In case a parameterized message is captured, Message should contain the same information, but with any placeholders being replaced.
+              type: string
+            pmg:
+              description: ParamMessage should contain the same information as Message, but with placeholders where parameters were logged, e.g. 'error connecting to %s'. The string is not interpreted, allowing differnt placeholders per client languange. The information might be used to group errors together.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            st:
+              description: Stacktrace information of the captured error.
+              type:
+              - 'null'
+              - array
+              items:
+                type: object
+                properties:
+                  ap:
+                    description: AbsPath is the absolute path of the frame's file.
+                    type:
+                    - 'null'
+                    - string
+                  cli:
+                    description: ContextLine is the line from the frame's file.
+                    type:
+                    - 'null'
+                    - string
+                  cn:
+                    description: Classname of the frame.
+                    type:
+                    - 'null'
+                    - string
+                  co:
+                    description: ColumnNumber of the frame.
+                    type:
+                    - 'null'
+                    - integer
+                  f:
+                    description: Filename is the relative name of the frame's file.
+                    type: string
+                  fn:
+                    description: Function represented by the frame.
+                    type:
+                    - 'null'
+                    - string
+                  li:
+                    description: LineNumber of the frame.
+                    type:
+                    - 'null'
+                    - integer
+                  mo:
+                    description: Module to which the frame belongs to.
+                    type:
+                    - 'null'
+                    - string
+                  poc:
+                    description: PostContext is a slice of code lines immediately before the line from the frame's file.
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type: string
+                    minItems: 0
+                  prc:
+                    description: PreContext is a slice of code lines immediately after the line from the frame's file.
+                    type:
+                    - 'null'
+                    - array
+                    items:
+                      type: string
+                    minItems: 0
+                required:
+                - f
+              minItems: 0
+          required:
+          - mg
+        pid:
+          description: ParentID holds the hex encoded 64 random bits ID of the parent transaction or span.
+          type:
+          - 'null'
+          - string
+          maxLength: 1024
+        tid:
+          description: TraceID holds the hex encoded 128 random bits ID of the correlated trace.
+          type:
+          - 'null'
+          - string
+          maxLength: 1024
+        timestamp:
+          description: Timestamp holds the recorded time of the event, UTC based and formatted as microseconds since Unix epoch.
+          type:
+          - 'null'
+          - integer
+        x:
+          description: Transaction holds information about the correlated transaction.
+          type:
+          - 'null'
+          - object
+          properties:
+            n:
+              description: 'Name is the generic designation of a transaction in the scope of a single service, eg: ''GET /users/:id''.'
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            sm:
+              description: Sampled indicates whether or not the full information for a transaction is captured. If a transaction is unsampled no spans and less context information will be reported.
+              type:
+              - 'null'
+              - boolean
+            t:
+              description: 'Type expresses the correlated transaction''s type as keyword that has specific relevance within the service''s domain, eg: ''request'', ''backgroundjob''.'
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+        xid:
+          description: TransactionID holds the hex encoded 64 random bits ID of the correlated transaction.
+          type:
+          - 'null'
+          - string
+          maxLength: 1024
+      required:
+      - id
+      allOf:
+      - if:
+          properties:
+            xid:
+              type: string
+          required:
+          - xid
+        then:
+          properties:
+            pid:
+              type: string
+          required:
+          - pid
+      - if:
+          properties:
+            tid:
+              type: string
+          required:
+          - tid
+        then:
+          properties:
+            pid:
+              type: string
+          required:
+          - pid
+      - if:
+          properties:
+            xid:
+              type: string
+          required:
+          - xid
+        then:
+          properties:
+            tid:
+              type: string
+          required:
+          - tid
+      - if:
+          properties:
+            pid:
+              type: string
+          required:
+          - pid
+        then:
+          properties:
+            tid:
+              type: string
+          required:
+          - tid
+      anyOf:
+      - properties:
+          ex:
+            type: object
+        required:
+        - ex
+      - properties:
+          log:
+            type: object
+        required:
+        - log
+    TransactionEventv3:
+      type: object
+      required:
+      - transaction
+      properties:
+        transaction:
+          $ref: '#/components/schemas/transaction-2'
     SpanEventv3:
       type: object
       required:
@@ -1159,6 +1610,455 @@ components:
       properties:
         span:
           $ref: '#/components/schemas/span-2'
+    MetricSetEvent:
+      type: object
+      description: "Metric sets are events that contain application metric data captured by an APM agent. \n"
+      required:
+      - metricset
+      properties:
+        metricset:
+          $ref: '#/components/schemas/metricset'
+    span-2:
+      $id: docs/spec/rumv3/span
+      type: object
+      properties:
+        ac:
+          description: Action holds the specific kind of event within the sub-type represented by the span (e.g. query, connect)
+          type:
+          - 'null'
+          - string
+          maxLength: 1024
+        c:
+          description: Context holds arbitrary contextual information for the event.
+          type:
+          - 'null'
+          - object
+          properties:
+            dt:
+              description: Destination contains contextual data about the destination of spans
+              type:
+              - 'null'
+              - object
+              properties:
+                ad:
+                  description: 'Address is the destination network address: hostname (e.g. ''localhost''), FQDN (e.g. ''elastic.co''), IPv4 (e.g. ''127.0.0.1'') IPv6 (e.g. ''::1'')'
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+                po:
+                  description: Port is the destination network port (e.g. 443)
+                  type:
+                  - 'null'
+                  - integer
+                se:
+                  description: Service describes the destination service
+                  type:
+                  - 'null'
+                  - object
+                  properties:
+                    n:
+                      description: 'Name is the identifier for the destination service, e.g. ''http://elastic.co'', ''elasticsearch'', ''rabbitmq'' DEPRECATED: this field will be removed in a future release'
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                    rc:
+                      description: 'Resource identifies the destination service resource being operated on e.g. ''http://elastic.co:80'', ''elasticsearch'', ''rabbitmq/queue_name'' DEPRECATED: this field will be removed in a future release'
+                      type: string
+                      maxLength: 1024
+                    t:
+                      description: 'Type of the destination service, e.g. db, elasticsearch. Should typically be the same as span.type. DEPRECATED: this field will be removed in a future release'
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                  required:
+                  - rc
+            g:
+              description: Tags are a flat mapping of user-defined tags. Allowed value types are string, boolean and number values. Tags are indexed and searchable.
+              type:
+              - 'null'
+              - object
+              additionalProperties:
+                type:
+                - 'null'
+                - string
+                - boolean
+                - number
+                maxLength: 1024
+            h:
+              description: HTTP contains contextual information when the span concerns an HTTP request.
+              type:
+              - 'null'
+              - object
+              properties:
+                mt:
+                  description: Method holds information about the method of the HTTP request.
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+                r:
+                  description: Response describes the HTTP response information in case the event was created as a result of an HTTP request.
+                  type:
+                  - 'null'
+                  - object
+                  properties:
+                    dbs:
+                      description: DecodedBodySize holds the size of the decoded payload.
+                      type:
+                      - 'null'
+                      - integer
+                    ebs:
+                      description: EncodedBodySize holds the size of the encoded payload.
+                      type:
+                      - 'null'
+                      - integer
+                    ts:
+                      description: TransferSize holds the total size of the payload.
+                      type:
+                      - 'null'
+                      - integer
+                sc:
+                  description: 'Deprecated: Use Response.StatusCode instead. StatusCode sent in the http response.'
+                  type:
+                  - 'null'
+                  - integer
+                url:
+                  description: URL is the raw url of the correlating HTTP request.
+                  type:
+                  - 'null'
+                  - string
+            se:
+              description: Service related information can be sent per span. Information provided here will override the more generic information retrieved from metadata, missing service fields will be retrieved from the metadata information.
+              type:
+              - 'null'
+              - object
+              properties:
+                a:
+                  description: Agent holds information about the APM agent capturing the event.
+                  type:
+                  - 'null'
+                  - object
+                  properties:
+                    n:
+                      description: Name of the APM agent capturing information.
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                    ve:
+                      description: Version of the APM agent capturing information.
+                      type:
+                      - 'null'
+                      - string
+                      maxLength: 1024
+                n:
+                  description: Name of the monitored service.
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+                  pattern: ^[a-zA-Z0-9 _-]+$
+        d:
+          description: Duration of the span in milliseconds
+          type: number
+          minimum: 0
+        id:
+          description: ID holds the hex encoded 64 random bits ID of the event.
+          type: string
+          maxLength: 1024
+        n:
+          description: Name is the generic designation of a span in the scope of a transaction.
+          type: string
+          maxLength: 1024
+        o:
+          description: 'Outcome of the span: success, failure, or unknown. Outcome may be one of a limited set of permitted values describing the success or failure of the span. It can be used for calculating error rates for outgoing requests.'
+          type:
+          - 'null'
+          - string
+          enum:
+          - success
+          - failure
+          - unknown
+          - null
+        pi:
+          description: ParentIndex is the index of the parent span in the list. Absent when the parent is a transaction.
+          type:
+          - 'null'
+          - integer
+        s:
+          description: Start is the offset relative to the transaction's timestamp identifying the start of the span, in milliseconds.
+          type: number
+        sr:
+          description: SampleRate applied to the monitored service at the time where this span was recorded.
+          type:
+          - 'null'
+          - number
+        st:
+          description: Stacktrace connected to this span event.
+          type:
+          - 'null'
+          - array
+          items:
+            type: object
+            properties:
+              ap:
+                description: AbsPath is the absolute path of the frame's file.
+                type:
+                - 'null'
+                - string
+              cli:
+                description: ContextLine is the line from the frame's file.
+                type:
+                - 'null'
+                - string
+              cn:
+                description: Classname of the frame.
+                type:
+                - 'null'
+                - string
+              co:
+                description: ColumnNumber of the frame.
+                type:
+                - 'null'
+                - integer
+              f:
+                description: Filename is the relative name of the frame's file.
+                type: string
+              fn:
+                description: Function represented by the frame.
+                type:
+                - 'null'
+                - string
+              li:
+                description: LineNumber of the frame.
+                type:
+                - 'null'
+                - integer
+              mo:
+                description: Module to which the frame belongs to.
+                type:
+                - 'null'
+                - string
+              poc:
+                description: PostContext is a slice of code lines immediately before the line from the frame's file.
+                type:
+                - 'null'
+                - array
+                items:
+                  type: string
+                minItems: 0
+              prc:
+                description: PreContext is a slice of code lines immediately after the line from the frame's file.
+                type:
+                - 'null'
+                - array
+                items:
+                  type: string
+                minItems: 0
+            required:
+            - f
+          minItems: 0
+        su:
+          description: Subtype is a further sub-division of the type (e.g. postgresql, elasticsearch)
+          type:
+          - 'null'
+          - string
+          maxLength: 1024
+        sy:
+          description: Sync indicates whether the span was executed synchronously or asynchronously.
+          type:
+          - 'null'
+          - boolean
+        t:
+          description: 'Type holds the span''s type, and can have specific keywords within the service''s domain (eg: ''request'', ''backgroundjob'', etc)'
+          type: string
+          maxLength: 1024
+      required:
+      - n
+      - t
+      - id
+      - s
+      - d
+    metadata-2:
+      $id: docs/spec/rumv3/metadata
+      type: object
+      properties:
+        l:
+          description: Labels are a flat mapping of user-defined tags. Allowed value types are string, boolean and number values. Labels are indexed and searchable.
+          type:
+          - 'null'
+          - object
+          additionalProperties:
+            type:
+            - 'null'
+            - string
+            - boolean
+            - number
+            maxLength: 1024
+        n:
+          description: Network holds information about the network over which the monitored service is communicating.
+          type:
+          - 'null'
+          - object
+          properties:
+            c:
+              type:
+              - 'null'
+              - object
+              properties:
+                t:
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+        se:
+          description: Service metadata about the monitored service.
+          type: object
+          properties:
+            a:
+              description: Agent holds information about the APM agent capturing the event.
+              type: object
+              properties:
+                n:
+                  description: Name of the APM agent capturing information.
+                  type: string
+                  maxLength: 1024
+                  minLength: 1
+                ve:
+                  description: Version of the APM agent capturing information.
+                  type: string
+                  maxLength: 1024
+              required:
+              - n
+              - ve
+            en:
+              description: Environment in which the monitored service is running, e.g. `production` or `staging`.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            fw:
+              description: Framework holds information about the framework used in the monitored service.
+              type:
+              - 'null'
+              - object
+              properties:
+                n:
+                  description: Name of the used framework
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+                ve:
+                  description: Version of the used framework
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+            la:
+              description: Language holds information about the programming language of the monitored service.
+              type:
+              - 'null'
+              - object
+              properties:
+                n:
+                  description: Name of the used programming language
+                  type: string
+                  maxLength: 1024
+                ve:
+                  description: Version of the used programming language
+                  type:
+                  - 'null'
+                  - string
+                  maxLength: 1024
+              required:
+              - n
+            n:
+              description: Name of the monitored service.
+              type: string
+              maxLength: 1024
+              minLength: 1
+              pattern: ^[a-zA-Z0-9 _-]+$
+            ru:
+              description: Runtime holds information about the language runtime running the monitored service
+              type:
+              - 'null'
+              - object
+              properties:
+                n:
+                  description: Name of the language runtime
+                  type: string
+                  maxLength: 1024
+                ve:
+                  description: Name of the language runtime
+                  type: string
+                  maxLength: 1024
+              required:
+              - n
+              - ve
+            ve:
+              description: Version of the monitored service.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+          required:
+          - a
+          - n
+        u:
+          description: User metadata, which can be overwritten on a per event basis.
+          type:
+          - 'null'
+          - object
+          properties:
+            em:
+              description: Email of the user.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            id:
+              description: ID identifies the logged in user, e.g. can be the primary key of the user
+              type:
+              - 'null'
+              - string
+              - integer
+              maxLength: 1024
+            ud:
+              description: Domain of the user
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            un:
+              description: Name of the user.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+      required:
+      - se
+    MetadataEvent:
+      type: object
+      description: "Every new connection to the APM Server starts with a metadata stanza. This provides general metadata concerning the other objects in the stream. Rather than send this metadata information from the agent multiple times, the APM Server hangs on to this information and applies it to other objects in the stream as necessary. TIP: Metadata is stored under context when viewing documents in Elasticsearch. APM agents automatically read Kubernetes data and send it to the APM Server. In most instances, agents are able to read this data from inside the container. If this is not the case, or if you wish to override this data, you can set environment variables for the agents to read. These environment variable are set via the Kubernetes Downward API. \n"
+      required:
+      - metadata
+      properties:
+        metadata:
+          $ref: '#/components/schemas/metadata'
+    SpanEvent:
+      type: object
+      description: 'Spans are events captured by an agent occurring in a monitored service.
+
+        '
+      required:
+      - span
+      properties:
+        span:
+          $ref: '#/components/schemas/span'
     span:
       $id: docs/spec/v2/span
       type: object
@@ -1795,802 +2695,6 @@ components:
             type: integer
         required:
         - timestamp
-    error-2:
-      $id: docs/spec/rumv3/error
-      type: object
-      properties:
-        c:
-          description: Context holds arbitrary contextual information for the event.
-          type:
-          - 'null'
-          - object
-          properties:
-            cu:
-              description: Custom can contain additional metadata to be stored with the event. The format is unspecified and can be deeply nested objects. The information will not be indexed or searchable in Elasticsearch.
-              type:
-              - 'null'
-              - object
-            g:
-              description: Tags are a flat mapping of user-defined tags. Allowed value types are string, boolean and number values. Tags are indexed and searchable.
-              type:
-              - 'null'
-              - object
-              additionalProperties:
-                type:
-                - 'null'
-                - string
-                - boolean
-                - number
-                maxLength: 1024
-            p:
-              description: Page holds information related to the current page and page referers. It is only sent from RUM agents.
-              type:
-              - 'null'
-              - object
-              properties:
-                rf:
-                  description: Referer holds the URL of the page that 'linked' to the current page.
-                  type:
-                  - 'null'
-                  - string
-                url:
-                  description: URL of the current page
-                  type:
-                  - 'null'
-                  - string
-            q:
-              description: Request describes the HTTP request information in case the event was created as a result of an HTTP request.
-              type:
-              - 'null'
-              - object
-              properties:
-                en:
-                  description: Env holds environment variable information passed to the monitored service.
-                  type:
-                  - 'null'
-                  - object
-                he:
-                  description: Headers includes any HTTP headers sent by the requester. Cookies will be taken by headers if supplied.
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    '[.*]*$':
-                      type:
-                      - 'null'
-                      - array
-                      - string
-                      items:
-                        type: string
-                hve:
-                  description: HTTPVersion holds information about the used HTTP version.
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-                mt:
-                  description: Method holds information about the method of the HTTP request.
-                  type: string
-                  maxLength: 1024
-              required:
-              - mt
-            r:
-              description: Response describes the HTTP response information in case the event was created as a result of an HTTP request.
-              type:
-              - 'null'
-              - object
-              properties:
-                dbs:
-                  description: DecodedBodySize holds the size of the decoded payload.
-                  type:
-                  - 'null'
-                  - integer
-                ebs:
-                  description: EncodedBodySize holds the size of the encoded payload.
-                  type:
-                  - 'null'
-                  - integer
-                he:
-                  description: Headers holds the http headers sent in the http response.
-                  type:
-                  - 'null'
-                  - object
-                  additionalProperties: false
-                  patternProperties:
-                    '[.*]*$':
-                      type:
-                      - 'null'
-                      - array
-                      - string
-                      items:
-                        type: string
-                sc:
-                  description: StatusCode sent in the http response.
-                  type:
-                  - 'null'
-                  - integer
-                ts:
-                  description: TransferSize holds the total size of the payload.
-                  type:
-                  - 'null'
-                  - integer
-            se:
-              description: Service related information can be sent per event. Information provided here will override the more generic information retrieved from metadata, missing service fields will be retrieved from the metadata information.
-              type:
-              - 'null'
-              - object
-              properties:
-                a:
-                  description: Agent holds information about the APM agent capturing the event.
-                  type:
-                  - 'null'
-                  - object
-                  properties:
-                    n:
-                      description: Name of the APM agent capturing information.
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                    ve:
-                      description: Version of the APM agent capturing information.
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                en:
-                  description: Environment in which the monitored service is running, e.g. `production` or `staging`.
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-                fw:
-                  description: Framework holds information about the framework used in the monitored service.
-                  type:
-                  - 'null'
-                  - object
-                  properties:
-                    n:
-                      description: Name of the used framework
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                    ve:
-                      description: Version of the used framework
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                la:
-                  description: Language holds information about the programming language of the monitored service.
-                  type:
-                  - 'null'
-                  - object
-                  properties:
-                    n:
-                      description: Name of the used programming language
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                    ve:
-                      description: Version of the used programming language
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                n:
-                  description: Name of the monitored service.
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-                  pattern: ^[a-zA-Z0-9 _-]+$
-                ru:
-                  description: Runtime holds information about the language runtime running the monitored service
-                  type:
-                  - 'null'
-                  - object
-                  properties:
-                    n:
-                      description: Name of the language runtime
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                    ve:
-                      description: Version of the language runtime
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                ve:
-                  description: Version of the monitored service.
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-            u:
-              description: User holds information about the correlated user for this event. If user data are provided here, all user related information from metadata is ignored, otherwise the metadata's user information will be stored with the event.
-              type:
-              - 'null'
-              - object
-              properties:
-                em:
-                  description: Email of the user.
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-                id:
-                  description: ID identifies the logged in user, e.g. can be the primary key of the user
-                  type:
-                  - 'null'
-                  - string
-                  - integer
-                  maxLength: 1024
-                ud:
-                  description: Domain of the user
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-                un:
-                  description: Name of the user.
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-        cl:
-          description: Culprit identifies the function call which was the primary perpetrator of this event.
-          type:
-          - 'null'
-          - string
-          maxLength: 1024
-        ex:
-          description: Exception holds information about the original error. The information is language specific.
-          type:
-          - 'null'
-          - object
-          properties:
-            at:
-              description: Attributes of the exception.
-              type:
-              - 'null'
-              - object
-            ca:
-              description: Cause can hold a collection of error exceptions representing chained exceptions. The chain starts with the outermost exception, followed by its cause, and so on.
-              type:
-              - 'null'
-              - array
-              items:
-                type: object
-              minItems: 0
-            cd:
-              description: Code that is set when the error happened, e.g. database error code.
-              type:
-              - 'null'
-              - string
-              - integer
-              maxLength: 1024
-            hd:
-              description: Handled indicates whether the error was caught in the code or not.
-              type:
-              - 'null'
-              - boolean
-            mg:
-              description: Message contains the originally captured error message.
-              type:
-              - 'null'
-              - string
-            mo:
-              description: Module describes the exception type's module namespace.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            st:
-              description: Stacktrace information of the captured exception.
-              type:
-              - 'null'
-              - array
-              items:
-                type: object
-                properties:
-                  ap:
-                    description: AbsPath is the absolute path of the frame's file.
-                    type:
-                    - 'null'
-                    - string
-                  cli:
-                    description: ContextLine is the line from the frame's file.
-                    type:
-                    - 'null'
-                    - string
-                  cn:
-                    description: Classname of the frame.
-                    type:
-                    - 'null'
-                    - string
-                  co:
-                    description: ColumnNumber of the frame.
-                    type:
-                    - 'null'
-                    - integer
-                  f:
-                    description: Filename is the relative name of the frame's file.
-                    type: string
-                  fn:
-                    description: Function represented by the frame.
-                    type:
-                    - 'null'
-                    - string
-                  li:
-                    description: LineNumber of the frame.
-                    type:
-                    - 'null'
-                    - integer
-                  mo:
-                    description: Module to which the frame belongs to.
-                    type:
-                    - 'null'
-                    - string
-                  poc:
-                    description: PostContext is a slice of code lines immediately before the line from the frame's file.
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type: string
-                    minItems: 0
-                  prc:
-                    description: PreContext is a slice of code lines immediately after the line from the frame's file.
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type: string
-                    minItems: 0
-                required:
-                - f
-              minItems: 0
-            t:
-              description: Type of the exception.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-          anyOf:
-          - properties:
-              mg:
-                type: string
-            required:
-            - mg
-          - properties:
-              t:
-                type: string
-            required:
-            - t
-        id:
-          description: ID holds the hex encoded 128 random bits ID of the event.
-          type: string
-          maxLength: 1024
-        log:
-          description: Log holds additional information added when the error is logged.
-          type:
-          - 'null'
-          - object
-          properties:
-            ln:
-              description: LoggerName holds the name of the used logger instance.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            lv:
-              description: Level represents the severity of the recorded log.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            mg:
-              description: Message of the logged error. In case a parameterized message is captured, Message should contain the same information, but with any placeholders being replaced.
-              type: string
-            pmg:
-              description: ParamMessage should contain the same information as Message, but with placeholders where parameters were logged, e.g. 'error connecting to %s'. The string is not interpreted, allowing differnt placeholders per client languange. The information might be used to group errors together.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            st:
-              description: Stacktrace information of the captured error.
-              type:
-              - 'null'
-              - array
-              items:
-                type: object
-                properties:
-                  ap:
-                    description: AbsPath is the absolute path of the frame's file.
-                    type:
-                    - 'null'
-                    - string
-                  cli:
-                    description: ContextLine is the line from the frame's file.
-                    type:
-                    - 'null'
-                    - string
-                  cn:
-                    description: Classname of the frame.
-                    type:
-                    - 'null'
-                    - string
-                  co:
-                    description: ColumnNumber of the frame.
-                    type:
-                    - 'null'
-                    - integer
-                  f:
-                    description: Filename is the relative name of the frame's file.
-                    type: string
-                  fn:
-                    description: Function represented by the frame.
-                    type:
-                    - 'null'
-                    - string
-                  li:
-                    description: LineNumber of the frame.
-                    type:
-                    - 'null'
-                    - integer
-                  mo:
-                    description: Module to which the frame belongs to.
-                    type:
-                    - 'null'
-                    - string
-                  poc:
-                    description: PostContext is a slice of code lines immediately before the line from the frame's file.
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type: string
-                    minItems: 0
-                  prc:
-                    description: PreContext is a slice of code lines immediately after the line from the frame's file.
-                    type:
-                    - 'null'
-                    - array
-                    items:
-                      type: string
-                    minItems: 0
-                required:
-                - f
-              minItems: 0
-          required:
-          - mg
-        pid:
-          description: ParentID holds the hex encoded 64 random bits ID of the parent transaction or span.
-          type:
-          - 'null'
-          - string
-          maxLength: 1024
-        tid:
-          description: TraceID holds the hex encoded 128 random bits ID of the correlated trace.
-          type:
-          - 'null'
-          - string
-          maxLength: 1024
-        timestamp:
-          description: Timestamp holds the recorded time of the event, UTC based and formatted as microseconds since Unix epoch.
-          type:
-          - 'null'
-          - integer
-        x:
-          description: Transaction holds information about the correlated transaction.
-          type:
-          - 'null'
-          - object
-          properties:
-            n:
-              description: 'Name is the generic designation of a transaction in the scope of a single service, eg: ''GET /users/:id''.'
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            sm:
-              description: Sampled indicates whether or not the full information for a transaction is captured. If a transaction is unsampled no spans and less context information will be reported.
-              type:
-              - 'null'
-              - boolean
-            t:
-              description: 'Type expresses the correlated transaction''s type as keyword that has specific relevance within the service''s domain, eg: ''request'', ''backgroundjob''.'
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-        xid:
-          description: TransactionID holds the hex encoded 64 random bits ID of the correlated transaction.
-          type:
-          - 'null'
-          - string
-          maxLength: 1024
-      required:
-      - id
-      allOf:
-      - if:
-          properties:
-            xid:
-              type: string
-          required:
-          - xid
-        then:
-          properties:
-            pid:
-              type: string
-          required:
-          - pid
-      - if:
-          properties:
-            tid:
-              type: string
-          required:
-          - tid
-        then:
-          properties:
-            pid:
-              type: string
-          required:
-          - pid
-      - if:
-          properties:
-            xid:
-              type: string
-          required:
-          - xid
-        then:
-          properties:
-            tid:
-              type: string
-          required:
-          - tid
-      - if:
-          properties:
-            pid:
-              type: string
-          required:
-          - pid
-        then:
-          properties:
-            tid:
-              type: string
-          required:
-          - tid
-      anyOf:
-      - properties:
-          ex:
-            type: object
-        required:
-        - ex
-      - properties:
-          log:
-            type: object
-        required:
-        - log
-    metricset:
-      $id: docs/spec/v2/metricset
-      type: object
-      properties:
-        faas:
-          description: FAAS holds fields related to Function as a Service events.
-          type:
-          - 'null'
-          - object
-          properties:
-            coldstart:
-              description: Indicates whether a function invocation was a cold start or not.
-              type:
-              - 'null'
-              - boolean
-            execution:
-              description: The request id of the function invocation.
-              type:
-              - 'null'
-              - string
-            id:
-              description: A unique identifier of the invoked serverless function.
-              type:
-              - 'null'
-              - string
-            name:
-              description: The lambda function name.
-              type:
-              - 'null'
-              - string
-            trigger:
-              description: Trigger attributes.
-              type:
-              - 'null'
-              - object
-              properties:
-                request_id:
-                  description: The id of the origin trigger request.
-                  type:
-                  - 'null'
-                  - string
-                type:
-                  description: The trigger type.
-                  type:
-                  - 'null'
-                  - string
-            version:
-              description: The lambda function version.
-              type:
-              - 'null'
-              - string
-        samples:
-          description: Samples hold application metrics collected from the agent.
-          type: object
-          additionalProperties: false
-          patternProperties:
-            ^[^*"]*$:
-              type:
-              - 'null'
-              - object
-              properties:
-                counts:
-                  description: Counts holds the bucket counts for histogram metrics.  These numbers must be positive or zero.  If Counts is specified, then Values is expected to be specified with the same number of elements, and with the same order.
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type: integer
-                    minimum: 0
-                  minItems: 0
-                type:
-                  description: 'Type holds an optional metric type: gauge, counter, or histogram.  If Type is unknown, it will be ignored.'
-                  type:
-                  - 'null'
-                  - string
-                unit:
-                  description: 'Unit holds an optional unit for the metric.  - "percent" (value is in the range [0,1]) - "byte" - a time unit: "nanos", "micros", "ms", "s", "m", "h", "d"  If Unit is unknown, it will be ignored.'
-                  type:
-                  - 'null'
-                  - string
-                value:
-                  description: Value holds the value of a single metric sample.
-                  type:
-                  - 'null'
-                  - number
-                values:
-                  description: Values holds the bucket values for histogram metrics.  Values must be provided in ascending order; failure to do so will result in the metric being discarded.
-                  type:
-                  - 'null'
-                  - array
-                  items:
-                    type: number
-                  minItems: 0
-              allOf:
-              - if:
-                  properties:
-                    counts:
-                      type: array
-                  required:
-                  - counts
-                then:
-                  properties:
-                    values:
-                      type: array
-                  required:
-                  - values
-              - if:
-                  properties:
-                    values:
-                      type: array
-                  required:
-                  - values
-                then:
-                  properties:
-                    counts:
-                      type: array
-                  required:
-                  - counts
-              anyOf:
-              - properties:
-                  value:
-                    type: number
-                required:
-                - value
-              - properties:
-                  values:
-                    type: array
-                required:
-                - values
-        service:
-          description: Service holds selected information about the correlated service.
-          type:
-          - 'null'
-          - object
-          properties:
-            name:
-              description: Name of the correlated service.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            version:
-              description: Version of the correlated service.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-        span:
-          description: Span holds selected information about the correlated transaction.
-          type:
-          - 'null'
-          - object
-          properties:
-            subtype:
-              description: Subtype is a further sub-division of the type (e.g. postgresql, elasticsearch)
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            type:
-              description: 'Type expresses the correlated span''s type as keyword that has specific relevance within the service''s domain, eg: ''request'', ''backgroundjob''.'
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-        tags:
-          description: Tags are a flat mapping of user-defined tags. On the agent side, tags are called labels. Allowed value types are string, boolean and number values. Tags are indexed and searchable.
-          type:
-          - 'null'
-          - object
-          additionalProperties:
-            type:
-            - 'null'
-            - string
-            - boolean
-            - number
-            maxLength: 1024
-        timestamp:
-          description: Timestamp holds the recorded time of the event, UTC based and formatted as microseconds since Unix epoch
-          type:
-          - 'null'
-          - integer
-        transaction:
-          description: Transaction holds selected information about the correlated transaction.
-          type:
-          - 'null'
-          - object
-          properties:
-            name:
-              description: Name of the correlated transaction.
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-            type:
-              description: 'Type expresses the correlated transaction''s type as keyword that has specific relevance within the service''s domain, eg: ''request'', ''backgroundjob''.'
-              type:
-              - 'null'
-              - string
-              maxLength: 1024
-      required:
-      - samples
-    SpanEvent:
-      type: object
-      description: 'Spans are events captured by an agent occurring in a monitored service.
-
-        '
-      required:
-      - span
-      properties:
-        span:
-          $ref: '#/components/schemas/span'
     error:
       $id: docs/spec/v2/error
       description: errorEvent represents an error or a logged error message, captured by an APM agent in a monitored service.
@@ -3478,287 +3582,6 @@ components:
             type: object
         required:
         - log
-    TransactionEvent:
-      type: object
-      description: 'Transactions are events corresponding to an incoming request or similar task occurring in a monitored service.
-
-        '
-      required:
-      - transaction
-      properties:
-        transaction:
-          $ref: '#/components/schemas/transaction'
-    TransactionEventv3:
-      type: object
-      required:
-      - transaction
-      properties:
-        transaction:
-          $ref: '#/components/schemas/transaction-2'
-    span-2:
-      $id: docs/spec/rumv3/span
-      type: object
-      properties:
-        ac:
-          description: Action holds the specific kind of event within the sub-type represented by the span (e.g. query, connect)
-          type:
-          - 'null'
-          - string
-          maxLength: 1024
-        c:
-          description: Context holds arbitrary contextual information for the event.
-          type:
-          - 'null'
-          - object
-          properties:
-            dt:
-              description: Destination contains contextual data about the destination of spans
-              type:
-              - 'null'
-              - object
-              properties:
-                ad:
-                  description: 'Address is the destination network address: hostname (e.g. ''localhost''), FQDN (e.g. ''elastic.co''), IPv4 (e.g. ''127.0.0.1'') IPv6 (e.g. ''::1'')'
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-                po:
-                  description: Port is the destination network port (e.g. 443)
-                  type:
-                  - 'null'
-                  - integer
-                se:
-                  description: Service describes the destination service
-                  type:
-                  - 'null'
-                  - object
-                  properties:
-                    n:
-                      description: 'Name is the identifier for the destination service, e.g. ''http://elastic.co'', ''elasticsearch'', ''rabbitmq'' DEPRECATED: this field will be removed in a future release'
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                    rc:
-                      description: 'Resource identifies the destination service resource being operated on e.g. ''http://elastic.co:80'', ''elasticsearch'', ''rabbitmq/queue_name'' DEPRECATED: this field will be removed in a future release'
-                      type: string
-                      maxLength: 1024
-                    t:
-                      description: 'Type of the destination service, e.g. db, elasticsearch. Should typically be the same as span.type. DEPRECATED: this field will be removed in a future release'
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                  required:
-                  - rc
-            g:
-              description: Tags are a flat mapping of user-defined tags. Allowed value types are string, boolean and number values. Tags are indexed and searchable.
-              type:
-              - 'null'
-              - object
-              additionalProperties:
-                type:
-                - 'null'
-                - string
-                - boolean
-                - number
-                maxLength: 1024
-            h:
-              description: HTTP contains contextual information when the span concerns an HTTP request.
-              type:
-              - 'null'
-              - object
-              properties:
-                mt:
-                  description: Method holds information about the method of the HTTP request.
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-                r:
-                  description: Response describes the HTTP response information in case the event was created as a result of an HTTP request.
-                  type:
-                  - 'null'
-                  - object
-                  properties:
-                    dbs:
-                      description: DecodedBodySize holds the size of the decoded payload.
-                      type:
-                      - 'null'
-                      - integer
-                    ebs:
-                      description: EncodedBodySize holds the size of the encoded payload.
-                      type:
-                      - 'null'
-                      - integer
-                    ts:
-                      description: TransferSize holds the total size of the payload.
-                      type:
-                      - 'null'
-                      - integer
-                sc:
-                  description: 'Deprecated: Use Response.StatusCode instead. StatusCode sent in the http response.'
-                  type:
-                  - 'null'
-                  - integer
-                url:
-                  description: URL is the raw url of the correlating HTTP request.
-                  type:
-                  - 'null'
-                  - string
-            se:
-              description: Service related information can be sent per span. Information provided here will override the more generic information retrieved from metadata, missing service fields will be retrieved from the metadata information.
-              type:
-              - 'null'
-              - object
-              properties:
-                a:
-                  description: Agent holds information about the APM agent capturing the event.
-                  type:
-                  - 'null'
-                  - object
-                  properties:
-                    n:
-                      description: Name of the APM agent capturing information.
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                    ve:
-                      description: Version of the APM agent capturing information.
-                      type:
-                      - 'null'
-                      - string
-                      maxLength: 1024
-                n:
-                  description: Name of the monitored service.
-                  type:
-                  - 'null'
-                  - string
-                  maxLength: 1024
-                  pattern: ^[a-zA-Z0-9 _-]+$
-        d:
-          description: Duration of the span in milliseconds
-          type: number
-          minimum: 0
-        id:
-          description: ID holds the hex encoded 64 random bits ID of the event.
-          type: string
-          maxLength: 1024
-        n:
-          description: Name is the generic designation of a span in the scope of a transaction.
-          type: string
-          maxLength: 1024
-        o:
-          description: 'Outcome of the span: success, failure, or unknown. Outcome may be one of a limited set of permitted values describing the success or failure of the span. It can be used for calculating error rates for outgoing requests.'
-          type:
-          - 'null'
-          - string
-          enum:
-          - success
-          - failure
-          - unknown
-          - null
-        pi:
-          description: ParentIndex is the index of the parent span in the list. Absent when the parent is a transaction.
-          type:
-          - 'null'
-          - integer
-        s:
-          description: Start is the offset relative to the transaction's timestamp identifying the start of the span, in milliseconds.
-          type: number
-        sr:
-          description: SampleRate applied to the monitored service at the time where this span was recorded.
-          type:
-          - 'null'
-          - number
-        st:
-          description: Stacktrace connected to this span event.
-          type:
-          - 'null'
-          - array
-          items:
-            type: object
-            properties:
-              ap:
-                description: AbsPath is the absolute path of the frame's file.
-                type:
-                - 'null'
-                - string
-              cli:
-                description: ContextLine is the line from the frame's file.
-                type:
-                - 'null'
-                - string
-              cn:
-                description: Classname of the frame.
-                type:
-                - 'null'
-                - string
-              co:
-                description: ColumnNumber of the frame.
-                type:
-                - 'null'
-                - integer
-              f:
-                description: Filename is the relative name of the frame's file.
-                type: string
-              fn:
-                description: Function represented by the frame.
-                type:
-                - 'null'
-                - string
-              li:
-                description: LineNumber of the frame.
-                type:
-                - 'null'
-                - integer
-              mo:
-                description: Module to which the frame belongs to.
-                type:
-                - 'null'
-                - string
-              poc:
-                description: PostContext is a slice of code lines immediately before the line from the frame's file.
-                type:
-                - 'null'
-                - array
-                items:
-                  type: string
-                minItems: 0
-              prc:
-                description: PreContext is a slice of code lines immediately after the line from the frame's file.
-                type:
-                - 'null'
-                - array
-                items:
-                  type: string
-                minItems: 0
-            required:
-            - f
-          minItems: 0
-        su:
-          description: Subtype is a further sub-division of the type (e.g. postgresql, elasticsearch)
-          type:
-          - 'null'
-          - string
-          maxLength: 1024
-        sy:
-          description: Sync indicates whether the span was executed synchronously or asynchronously.
-          type:
-          - 'null'
-          - boolean
-        t:
-          description: 'Type holds the span''s type, and can have specific keywords within the service''s domain (eg: ''request'', ''backgroundjob'', etc)'
-          type: string
-          maxLength: 1024
-      required:
-      - n
-      - t
-      - id
-      - s
-      - d
     transaction-2:
       $id: docs/spec/rumv3/transaction
       type: object
@@ -4897,14 +4720,208 @@ components:
               maxLength: 1024
       required:
       - service
-    MetricSetEvent:
+    metricset:
+      $id: docs/spec/v2/metricset
       type: object
-      description: "Metric sets are events that contain application metric data captured by an APM agent. \n"
-      required:
-      - metricset
       properties:
-        metricset:
-          $ref: '#/components/schemas/metricset'
+        faas:
+          description: FAAS holds fields related to Function as a Service events.
+          type:
+          - 'null'
+          - object
+          properties:
+            coldstart:
+              description: Indicates whether a function invocation was a cold start or not.
+              type:
+              - 'null'
+              - boolean
+            execution:
+              description: The request id of the function invocation.
+              type:
+              - 'null'
+              - string
+            id:
+              description: A unique identifier of the invoked serverless function.
+              type:
+              - 'null'
+              - string
+            name:
+              description: The lambda function name.
+              type:
+              - 'null'
+              - string
+            trigger:
+              description: Trigger attributes.
+              type:
+              - 'null'
+              - object
+              properties:
+                request_id:
+                  description: The id of the origin trigger request.
+                  type:
+                  - 'null'
+                  - string
+                type:
+                  description: The trigger type.
+                  type:
+                  - 'null'
+                  - string
+            version:
+              description: The lambda function version.
+              type:
+              - 'null'
+              - string
+        samples:
+          description: Samples hold application metrics collected from the agent.
+          type: object
+          additionalProperties: false
+          patternProperties:
+            ^[^*"]*$:
+              type:
+              - 'null'
+              - object
+              properties:
+                counts:
+                  description: Counts holds the bucket counts for histogram metrics.  These numbers must be positive or zero.  If Counts is specified, then Values is expected to be specified with the same number of elements, and with the same order.
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type: integer
+                    minimum: 0
+                  minItems: 0
+                type:
+                  description: 'Type holds an optional metric type: gauge, counter, or histogram.  If Type is unknown, it will be ignored.'
+                  type:
+                  - 'null'
+                  - string
+                unit:
+                  description: 'Unit holds an optional unit for the metric.  - "percent" (value is in the range [0,1]) - "byte" - a time unit: "nanos", "micros", "ms", "s", "m", "h", "d"  If Unit is unknown, it will be ignored.'
+                  type:
+                  - 'null'
+                  - string
+                value:
+                  description: Value holds the value of a single metric sample.
+                  type:
+                  - 'null'
+                  - number
+                values:
+                  description: Values holds the bucket values for histogram metrics.  Values must be provided in ascending order; failure to do so will result in the metric being discarded.
+                  type:
+                  - 'null'
+                  - array
+                  items:
+                    type: number
+                  minItems: 0
+              allOf:
+              - if:
+                  properties:
+                    counts:
+                      type: array
+                  required:
+                  - counts
+                then:
+                  properties:
+                    values:
+                      type: array
+                  required:
+                  - values
+              - if:
+                  properties:
+                    values:
+                      type: array
+                  required:
+                  - values
+                then:
+                  properties:
+                    counts:
+                      type: array
+                  required:
+                  - counts
+              anyOf:
+              - properties:
+                  value:
+                    type: number
+                required:
+                - value
+              - properties:
+                  values:
+                    type: array
+                required:
+                - values
+        service:
+          description: Service holds selected information about the correlated service.
+          type:
+          - 'null'
+          - object
+          properties:
+            name:
+              description: Name of the correlated service.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            version:
+              description: Version of the correlated service.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+        span:
+          description: Span holds selected information about the correlated transaction.
+          type:
+          - 'null'
+          - object
+          properties:
+            subtype:
+              description: Subtype is a further sub-division of the type (e.g. postgresql, elasticsearch)
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            type:
+              description: 'Type expresses the correlated span''s type as keyword that has specific relevance within the service''s domain, eg: ''request'', ''backgroundjob''.'
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+        tags:
+          description: Tags are a flat mapping of user-defined tags. On the agent side, tags are called labels. Allowed value types are string, boolean and number values. Tags are indexed and searchable.
+          type:
+          - 'null'
+          - object
+          additionalProperties:
+            type:
+            - 'null'
+            - string
+            - boolean
+            - number
+            maxLength: 1024
+        timestamp:
+          description: Timestamp holds the recorded time of the event, UTC based and formatted as microseconds since Unix epoch
+          type:
+          - 'null'
+          - integer
+        transaction:
+          description: Transaction holds selected information about the correlated transaction.
+          type:
+          - 'null'
+          - object
+          properties:
+            name:
+              description: Name of the correlated transaction.
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+            type:
+              description: 'Type expresses the correlated transaction''s type as keyword that has specific relevance within the service''s domain, eg: ''request'', ''backgroundjob''.'
+              type:
+              - 'null'
+              - string
+              maxLength: 1024
+      required:
+      - samples
     ErrorEventv3:
       type: object
       required:
@@ -4912,23 +4929,6 @@ components:
       properties:
         error:
           $ref: '#/components/schemas/error-2'
-    MetadataEventv3:
-      type: object
-      required:
-      - metadata
-      properties:
-        metadata:
-          $ref: '#/components/schemas/metadata-2'
-    ErrorEvent:
-      type: object
-      description: 'Errors are events that occur in a monitored service and correspond to an error or a logged message captured by an agent.
-
-        '
-      required:
-      - error
-      properties:
-        error:
-          $ref: '#/components/schemas/error'
   securitySchemes:
     apiKeyAuth:
       type: apiKey
