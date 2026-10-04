@@ -127,6 +127,9 @@ apis:
     url: overlays/elastic-observability-opentelemetry-intake-overlay.yaml
   baseURL: https://{deployment}.apm.{region}.cloud.es.io:443
 common:
+- type: CapabilityMap
+  url: capabilities/elastic-observability-capability-edges.yml
+  name: Elastic Observability Business Capability Map
 - type: AgenticAccess
   url: agentic-access/elastic-observability-agentic-access.yml
 - type: TrustCenter
