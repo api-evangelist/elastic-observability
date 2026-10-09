@@ -1,18 +1,18 @@
-generated: '2026-08-29'
+generated: '2026-09-23'
 method: generated
 source: openapi/elastic-observability-agent-config-api-openapi.yml, openapi/elastic-observability-event-intake-api-openapi.yml,
   openapi/elastic-observability-opentelemetry-intake-api-openapi.yml, openapi/elastic-observability-server-info-api-openapi.yml
-description: Recommended x-agentic-access execution contracts, classified heuristically from the OpenAPI.
-  A governance starting point for exposing this API to AI agents — review and bind audience per deployment.
-  See research/curity/agentic-governance/.
+description: Recommended x-agentic-access execution contracts, classified heuristically from
+  the OpenAPI. A governance starting point for exposing this API to AI agents — review and bind
+  audience per deployment. See research/curity/agentic-governance/.
 summary:
   operations: 14
   by_action_class:
-    connected: 3
-    acting: 11
+    connected: 5
+    acting: 9
   by_consequence:
-    read: 3
-    write: 11
+    read: 5
+    physical: 9
   human_in_the_loop_required: 0
 operations:
 - path: /config/v1/agents
@@ -29,18 +29,12 @@ operations:
   method: post
   operationId: postAgentConfig
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /config/v1/rum/agents
   method: get
   operationId: getRumAgentConfig
@@ -56,11 +50,12 @@ operations:
   operationId: postEventIntake
   x-agentic-access:
     action-class: acting
-    consequence: write
+    consequence: physical
     subject: required
     audience: null
     token:
-      max-ttl: 900
+      max-ttl: 300
+      exchange: true
       purpose-required: true
     escalation:
       human-in-the-loop: conditional
@@ -68,17 +63,17 @@ operations:
       - abnormal
       - high-value
     audit: required
-    x-corrected: consequence lowered from physical to write — see corrections
 - path: /intake/v2/rum/events
   method: post
   operationId: postRumEventIntakeV2
   x-agentic-access:
     action-class: acting
-    consequence: write
+    consequence: physical
     subject: required
     audience: null
     token:
-      max-ttl: 900
+      max-ttl: 300
+      exchange: true
       purpose-required: true
     escalation:
       human-in-the-loop: conditional
@@ -86,17 +81,17 @@ operations:
       - abnormal
       - high-value
     audit: required
-    x-corrected: consequence lowered from physical to write — see corrections
 - path: /intake/v3/rum/events
   method: post
   operationId: postRumEventIntakeV3
   x-agentic-access:
     action-class: acting
-    consequence: write
+    consequence: physical
     subject: required
     audience: null
     token:
-      max-ttl: 900
+      max-ttl: 300
+      exchange: true
       purpose-required: true
     escalation:
       human-in-the-loop: conditional
@@ -104,17 +99,17 @@ operations:
       - abnormal
       - high-value
     audit: required
-    x-corrected: consequence lowered from physical to write — see corrections
 - path: /opentelemetry.proto.collector.metrics.v1.MetricsService/Export
   method: post
   operationId: postOtlpGrpcMetrics
   x-agentic-access:
     action-class: acting
-    consequence: write
+    consequence: physical
     subject: required
     audience: null
     token:
-      max-ttl: 900
+      max-ttl: 300
+      exchange: true
       purpose-required: true
     escalation:
       human-in-the-loop: conditional
@@ -122,17 +117,17 @@ operations:
       - abnormal
       - high-value
     audit: required
-    x-corrected: consequence lowered from physical to write — see corrections
 - path: /opentelemetry.proto.collector.trace.v1.TraceService/Export
   method: post
   operationId: postOtlpGrpcTraces
   x-agentic-access:
     action-class: acting
-    consequence: write
+    consequence: physical
     subject: required
     audience: null
     token:
-      max-ttl: 900
+      max-ttl: 300
+      exchange: true
       purpose-required: true
     escalation:
       human-in-the-loop: conditional
@@ -140,17 +135,17 @@ operations:
       - abnormal
       - high-value
     audit: required
-    x-corrected: consequence lowered from physical to write — see corrections
 - path: /opentelemetry.proto.collector.logs.v1.LogsService/Export
   method: post
   operationId: postOtlpGrpcLogs
   x-agentic-access:
     action-class: acting
-    consequence: write
+    consequence: physical
     subject: required
     audience: null
     token:
-      max-ttl: 900
+      max-ttl: 300
+      exchange: true
       purpose-required: true
     escalation:
       human-in-the-loop: conditional
@@ -158,17 +153,17 @@ operations:
       - abnormal
       - high-value
     audit: required
-    x-corrected: consequence lowered from physical to write — see corrections
 - path: /v1/metrics
   method: post
   operationId: postOtlpHttpMetrics
   x-agentic-access:
     action-class: acting
-    consequence: write
+    consequence: physical
     subject: required
     audience: null
     token:
-      max-ttl: 900
+      max-ttl: 300
+      exchange: true
       purpose-required: true
     escalation:
       human-in-the-loop: conditional
@@ -176,17 +171,17 @@ operations:
       - abnormal
       - high-value
     audit: required
-    x-corrected: consequence lowered from physical to write — see corrections
 - path: /v1/traces
   method: post
   operationId: postOtlpHttpTraces
   x-agentic-access:
     action-class: acting
-    consequence: write
+    consequence: physical
     subject: required
     audience: null
     token:
-      max-ttl: 900
+      max-ttl: 300
+      exchange: true
       purpose-required: true
     escalation:
       human-in-the-loop: conditional
@@ -194,17 +189,17 @@ operations:
       - abnormal
       - high-value
     audit: required
-    x-corrected: consequence lowered from physical to write — see corrections
 - path: /v1/logs
   method: post
   operationId: postOtlpHttpLogs
   x-agentic-access:
     action-class: acting
-    consequence: write
+    consequence: physical
     subject: required
     audience: null
     token:
-      max-ttl: 900
+      max-ttl: 300
+      exchange: true
       purpose-required: true
     escalation:
       human-in-the-loop: conditional
@@ -212,7 +207,6 @@ operations:
       - abnormal
       - high-value
     audit: required
-    x-corrected: consequence lowered from physical to write — see corrections
 - path: /
   method: get
   operationId: getServerHealth
@@ -227,38 +221,9 @@ operations:
   method: post
   operationId: postServerHealth
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
-corrections:
-- date: '2026-08-29'
-  applied_to:
-  - postEventIntake
-  - postRumEventIntakeV2
-  - postRumEventIntakeV3
-  - postOtlpGrpcMetrics
-  - postOtlpGrpcTraces
-  - postOtlpGrpcLogs
-  - postOtlpHttpMetrics
-  - postOtlpHttpTraces
-  - postOtlpHttpLogs
-  from: physical
-  to: write
-  reason: The derive heuristic raises consequence to `physical` on payment/order/transfer style keywords,
-    and it fired on the telemetry intake and OTLP *Export* operation names. Writing a span, a metric
-    sample or a log line into an observability store moves no money and touches no physical system —
-    it is an ordinary append. Left uncorrected this file would tell an agent it needs token exchange
-    and a stated purpose to emit a log, which is both wrong and the kind of false ceiling that gets
-    governance guidance ignored wholesale.
-  residual_risk: 'These operations remain `acting`/`write` with audit: required, which is correct: the
-    writes are irreversible and un-deduplicated. See conventions/elastic-observability-conventions.yml
-    reversibility.'
+      max-ttl: 3600
+    audit: none

@@ -7,16 +7,21 @@ front_door_ai:
   probed_at: '2026-09-17'
   host: www.elastic.co
   final_host: www.elastic.co
-  ownership: unresolved
-  owner: null
+  ownership: shared
+  owner: elastic
   shares_host_with:
+  - elastic
   - elastic-stack
   - elasticsearch
   - elk-stack
   - kibana
+  - logstash
   inherited_from: null
+  alias_of: null
   verdict: scored
   score: null
+  band: null
+  band_label: null
   host_score: 25
   density: null
   words: 1246
