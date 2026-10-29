@@ -1,4 +1,4 @@
-# Elastic Observability (elastic-observability)
+# Elastic Observability
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,49 +64,153 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Elastic Observability provides unified logs, metrics, traces, and AI-driven anomaly detection built on the Elastic Stack.
+Elastic Observability is Elastic's unified logs, metrics, traces and profiling solution, built on the Elastic Stack. Its published machine-readable contract is the Observability Intake API served by APM Server: a newline-delimited JSON event intake for Elastic APM agents, a central agent-configuration endpoint, and native OpenTelemetry Protocol ingest over both OTLP/HTTP and OTLP/gRPC. Analysis of the telemetry once it has landed happens through Kibana and, for agents, through the Elastic Agent Builder MCP server, which exposes sixteen observability.* tools over a deployment-scoped endpoint.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/elastic-observability/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/elastic-observability/refs/heads/main/apis.yml)
+**Areas:** AIOps · Observability · APM · Logging · Metrics · Tracing · OpenTelemetry · Monitoring · Telemetry
 
-## Scope
+## Elastic Observability on APIs.io
 
-- **Type:** Index
+Everything profiled for Elastic Observability is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/elastic-observability/](https://apis.io/providers/elastic-observability/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (5)
 
-- AIOps
-- Observability
+- [Elastic Observability](https://apis.io/apis/elastic-observability/elastic-observability/) — The Elastic Observability product surface: logs, metrics, APM traces, synthetics, RUM, universal profiling and SLOs on the Elastic Stack. The callable…
+- [Elastic Observability Server Info API](https://apis.io/apis/elastic-observability/elastic-observability-server-info-api/) — The Server Info API from Elastic Observability — 1 operation(s) for server info.
+- [Elastic Observability agent config API](https://apis.io/apis/elastic-observability/elastic-observability-agent-config-api/) — APIs that query the APM Server for configuration changes.
+- [Elastic Observability event intake API](https://apis.io/apis/elastic-observability/elastic-observability-event-intake-api/) — The events intake API is the internal protocol that APM agents use to talk to the APM Server.
+- [Elastic Observability opentelemetry intake API](https://apis.io/apis/elastic-observability/elastic-observability-opentelemetry-intake-api/) — The OpenTelemetry intake API uses the OpenTelemetry Protocol (OTLP) to send traces, metrics, and logs to APM Server. OTLP is the default transfer protocol…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-27
-- **Modified:** 2026-03-27
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### MCP servers (1)
 
-### Elastic Observability
+Model Context Protocol servers that expose the API to agents.
 
-Elastic Observability provides unified logs, metrics, traces, and AI-driven anomaly detection built on the Elastic Stack.
+- [Elastic Agent Builder MCP Server](https://apis.io/servers/elastic-observability/elastic-agent-builder-mcp-server/)
 
-- **Human URL:** [https://www.elastic.co/observability](https://www.elastic.co/observability)
+#### Agentic access (1)
 
-#### Tags
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- AIOps
+- [Elastic Observability Agentic Access](https://apis.io/agentic-access/elastic-observability/elastic-observability-agentic-access/)
 
-#### Properties
+#### Collections (5)
 
-- [Documentation](https://www.elastic.co/guide/en/observability/current/index.html)
-- [Postman Collection](collections/elastic-observability.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/elastic-observability.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Postman and Open Collection request collections.
 
-## Common Properties
+- [Elastic Observability (APM Server) API](https://apis.io/collections/elastic-observability/open-elastic-observability/)
+- [Elastic Observability (APM Server) Agent Configuration API](https://apis.io/collections/elastic-observability/open-elastic-observability-agent-configuration-api/)
+- [Elastic Observability (APM Server) Agent Configuration Intake API](https://apis.io/collections/elastic-observability/open-elastic-observability-intake-api/)
+- [Elastic Observability (APM Server) Agent Configuration OpenTelemetry API](https://apis.io/collections/elastic-observability/open-elastic-observability-opentelemetry-api/)
+- [Elastic Observability (APM Server) Agent Configuration Server Info API](https://apis.io/collections/elastic-observability/open-elastic-observability-server-info-api/)
+
+#### Overlays (4)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Elastic Observability Agent Config Overlay](https://apis.io/overlays/elastic-observability/elastic-observability-agent-config-overlay/)
+- [Elastic Observability Event Intake Overlay](https://apis.io/overlays/elastic-observability/elastic-observability-event-intake-overlay/)
+- [Elastic Observability Opentelemetry Intake Overlay](https://apis.io/overlays/elastic-observability/elastic-observability-opentelemetry-intake-overlay/)
+- [Elastic Observability Server Info Overlay](https://apis.io/overlays/elastic-observability/elastic-observability-server-info-overlay/)
+
+#### Security (4)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Elastic Observability Authentication](https://apis.io/security/elastic-observability/elastic-observability-authentication/)
+- [Elastic Observability Domain Security](https://apis.io/security/elastic-observability/elastic-observability-domain-security/)
+- [Elastic Observability Trust Center](https://apis.io/security/elastic-observability/elastic-observability-trust-center/)
+- [Elastic Observability Vulnerability Disclosure](https://apis.io/security/elastic-observability/elastic-observability-vulnerability-disclosure/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Elastic Observability Plans Pricing](https://apis.io/plans/elastic-observability/elastic-observability-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Elastic Observability Rate Limits](https://apis.io/rate-limits/elastic-observability/elastic-observability-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Elastic Observability Finops](https://apis.io/finops/elastic-observability/elastic-observability-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.elastic.co/observability)
-- [Documentation](https://www.elastic.co/guide/en/observability/current/index.html)
-- [Integrations](https://www.elastic.co/integrations)
+- [Documentation](https://www.elastic.co/docs/solutions/observability)
+- [Getting started](https://www.elastic.co/docs/get-started)
+- [API reference](https://www.elastic.co/docs/api)
+- [Pricing](https://www.elastic.co/pricing/serverless-observability)
+- [Sign up](https://cloud.elastic.co/registration)
+- [Support](https://www.elastic.co/support)
+- [Blog](https://www.elastic.co/observability-labs)
+- [Security](https://www.elastic.co/product-security)
+- [Terms of service](https://www.elastic.co/legal/terms-of-use)
+- [Privacy policy](https://www.elastic.co/legal/privacy-statement)
+- [GitHub](https://github.com/elastic)
+- [Status](https://status.elastic.co)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 58.0** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 60.0 |
+| Contract quality | 43.4 |
+| Contract governance | 18.2 |
+| Operational transparency | 52.6 |
+| Developer ergonomics | 80.4 |
+| Access clarity | 68.4 |
+
+**Agent readiness 28.5** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | templated |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | — |
+
+**Regulatory alignment 35.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/elastic-observability/](https://apis.io/providers/elastic-observability/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Elastic Observability: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/elastic-observability/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
