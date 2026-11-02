@@ -1,0 +1,276 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://www.elastic.co/pricing/serverless-observability
+sources:
+- https://www.elastic.co/pricing/serverless-observability
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T141238
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: usage-other
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-28'
+  managed_tier: Logs Essentials
+published: true
+note: Serverless observability usage pricing by GB ingested/retained plus add-ons; support priced as %
+  of consumption.
+plan_count: 17
+currency: USD
+plans:
+- name: Logs Essentials — ingest (logs, traces, synthetics, RUM, others)
+  price_text: As low as $0.07
+  price: 0.07
+  currency: USD
+  period: per-use
+  unit: per GB ingested
+- name: Logs Essentials — retention
+  price_text: As low as $0.017
+  price: 0.017
+  currency: USD
+  period: month
+  unit: per GB retained per month
+- name: Complete — ingest (logs, traces, synthetics, RUM, others)
+  price_text: As low as $0.09
+  price: 0.09
+  currency: USD
+  period: per-use
+  unit: per GB ingested
+- name: Complete — ingest metrics
+  price_text: As low as $0.023
+  price: 0.023
+  currency: USD
+  period: per-use
+  unit: per GB ingested
+- name: Complete — retention logs/traces
+  price_text: $0.019
+  price: 0.019
+  currency: USD
+  period: month
+  unit: per GB retained per month
+- name: Complete — retention metrics
+  price_text: $0.005
+  price: 0.005
+  currency: USD
+  period: month
+  unit: per GB retained per month
+- name: Egress
+  price_text: 50 GB free, then $0.05
+  currency: USD
+  period: month
+  unit: per GB transferred per month
+  included_quota: 50 GB free
+  overage: $0.05 per GB
+- name: Synthetic monitoring browser tests
+  price_text: $0.0123 /test run
+  price: 0.0123
+  currency: USD
+  period: per-use
+  unit: test run
+- name: Synthetic lightweight testing locations
+  price_text: $28.00 /location/month
+  price: 28
+  currency: USD
+  period: month
+  unit: location
+- name: Elastic Managed LLM — input
+  price_text: $4.50 per million input tokens
+  price: 4.5
+  currency: USD
+  period: per-use
+  unit: million input tokens
+- name: Elastic Managed LLM — output
+  price_text: $21 per million output tokens
+  price: 21
+  currency: USD
+  period: per-use
+  unit: million output tokens
+- name: Cross-project search — retention
+  price_text: As low as $0.0023
+  price: 0.0023
+  currency: USD
+  period: month
+  unit: per GB retained in linked projects per month
+- name: Workflows
+  price_text: 10,000 executions free, then as low as $0.0108 per execution
+  currency: USD
+  period: per-use
+  unit: execution
+  included_quota: 10,000 executions free
+  overage: $0.0108 per execution
+- name: Agent Builder
+  price_text: 10,000 executions free, then as low as $0.025 per execution
+  currency: USD
+  period: per-use
+  unit: execution
+  included_quota: 10,000 executions free
+  overage: $0.025 per execution
+- name: Support — Gold
+  price_text: 5%
+  price: 5
+  period: none
+  unit: '% of charge'
+- name: Support — Platinum
+  price_text: 10%
+  price: 10
+  period: none
+  unit: '% of charge'
+- name: Support — Enterprise
+  price_text: 15%
+  price: 15
+  period: none
+  unit: '% of charge'
+rate_limit_statements:
+- 99.95% Monthly Uptime Service Level Agreement (SLA)
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models:
+  - hybrid
+  - metered
+  - subscription
+  units:
+  - data
+  - object
+  - request
+  - token
+  plans:
+  - name: Logs Essentials — ingest (logs, traces, synthetics, RUM, others)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - other
+  - name: Logs Essentials — retention
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: Complete — ingest (logs, traces, synthetics, RUM, others)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - other
+  - name: Complete — ingest metrics
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - other
+  - name: Complete — retention logs/traces
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: Complete — retention metrics
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: Egress
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: Synthetic monitoring browser tests
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Synthetic lightweight testing locations
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - object
+    periods:
+    - month
+  - name: Elastic Managed LLM — input
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Elastic Managed LLM — output
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Cross-project search — retention
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - data
+    periods:
+    - month
+  - name: Workflows
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - request
+    periods:
+    - other
+  - name: Agent Builder
+    access: other
+    model: metered
+    model_how: derived
+    units:
+    - request
+    periods:
+    - other
+  - name: Support — Gold
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - none
+  - name: Support — Platinum
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - none
+  - name: Support — Enterprise
+    access: other
+    model: subscription
+    model_how: derived
+    units:
+    - other
+    periods:
+    - none
