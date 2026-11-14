@@ -5,10 +5,19 @@ artifacts:
   agentic-access/elastic-observability-agentic-access.yml:
     method: generated
     evidence: declared in the artifact
+  ai-preferences/elastic-observability-ai-preferences.yml:
+    method: harvested
+    evidence: declared in the artifact
   authentication/elastic-observability-authentication.yml:
     method: searched
     evidence: declared in the artifact
   capabilities/elastic-observability-capability-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
     method: unknown
     evidence: no authorship recorded
   changelog/elastic-observability-changelog.yml:
@@ -47,14 +56,26 @@ artifacts:
   collections/elastic-observability.postman_collection.json:
     method: derived
     evidence: openapi/elastic-observability
+  compliance/elastic-observability-compliance.yml:
+    method: harvested
+    evidence: declared in the artifact
   conformance/elastic-observability-conformance.yml:
     method: searched
     evidence: declared in the artifact
   conventions/elastic-observability-conventions.yml:
     method: derived
     evidence: declared in the artifact
+  data-license/elastic-observability-data-license.yml:
+    method: harvested
+    evidence: declared in the artifact
   data-model/elastic-observability-data-model.yml:
     method: derived
+    evidence: declared in the artifact
+  deprecation/elastic-observability-deprecation-policy.yml:
+    method: harvested
+    evidence: declared in the artifact
+  eligibility/elastic-observability-eligibility.yml:
+    method: harvested
     evidence: declared in the artifact
   errors/elastic-observability-problem-types.yml:
     method: derived
@@ -74,7 +95,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -140,6 +161,9 @@ artifacts:
   kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/elastic-observability-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -192,6 +216,9 @@ artifacts:
   plans/elastic-observability-price-estimates.yml:
     method: unknown
     evidence: no authorship recorded
+  privacy/elastic-observability-privacy-policy.yml:
+    method: harvested
+    evidence: declared in the artifact
   rate-limits/elastic-observability-rate-limits.yml:
     method: searched
     evidence: declared in the artifact
@@ -227,6 +254,9 @@ artifacts:
     evidence: declared in the artifact
   sla/elastic-observability-sla.yml:
     method: generated
+    evidence: declared in the artifact
+  terms/elastic-observability-terms-of-service.yml:
+    method: harvested
     evidence: declared in the artifact
   well-known/elastic-observability-security.txt:
     method: unknown
